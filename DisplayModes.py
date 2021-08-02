@@ -23,6 +23,8 @@ class DisplayMode():
         if self.init_func is not None and self.is_init:
             self.init_func()
             self.is_init = False
+        else:
+            self.func()
         self.iterator = self.func(self.iterator)
 
 def off(iterator=None):
