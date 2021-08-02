@@ -59,8 +59,11 @@ def init_grid_map():
 	add_strip_to_grid_map(desk[:7],[60,25],[1,0],False)
 	add_strip_to_grid_map(desk[7:],[68,25],[1,0],False)
 	add_strip_to_grid_map(bed,[0,27],[1,0],True)
+
 init_grid_map()
+
 iterator = [0,0,0]
+
 while True:
 	if   displayMode == 0: # off
 		solid_color(allstrips,0,0,0)
@@ -70,9 +73,9 @@ while True:
 		iterator[0] = ftick(rainbow(allstrips,iterator[0],3.0,1.0,2.5,3.0))
 	elif displayMode == 3: # vertical rainbow
 		iterator[0] = ftick(vert_rainbow(grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
-	elif displayMode == 4:
+	elif displayMode == 4: # diagonal rainbow
 		iterator[0] = ftick(diag_rainbow(grid_map,iterator[0],-2.0,0.3125,7.5,1.0,1.0))
-	elif displayMode == 5:
+	elif displayMode == 5: # 
 		brightness = .2
 		sinA = .05
 		sinT = 40.0
@@ -95,29 +98,29 @@ while True:
 		brightness = 1.0
 		p_grapefruit = points2pal(pe_grapefruit(brightness),0,28)
 		vert_palette(grid_map,p_grapefruit,1)
-	elif displayMode == 7:
-		brightness = 1.0
-		line = sampleLevels(25)
-		if isValid(line):
-			levels = decay(levels,line,.5)
+	#elif displayMode == 7:
+		#brightness = 1.0
+		#line = sampleLevels(25)
+		#if isValid(line):
+		#	levels = decay(levels,line,.5)
 #		plotLevels(levels);
-		bass = ((levels[0]+levels[1])/2) *.005
-		mid = ((levels[2]+levels[3])/2) *.0025
+		#bass = ((levels[0]+levels[1])/2) *.005
+		#mid = ((levels[2]+levels[3])/2) *.0025
 		#bass = int(float(20*bass) / 1024.0)
 		#print(bass)
 		#treble = int(float(20*treble) / 1024.0)
 		#treble *= 20
 #		print(treble)
 		#print(str(bass) + ',' + str(treble))
-		top = hsv2rgb(iterator[1],.75,0.5+mid)
-		bot = hsv2rgb(iterator[0],1,0.5+bass)
-		pe_sr =[[0,28],[top[0],bot[0]],\
-			       [top[1],bot[1]],\
-			       [top[2],bot[2]]]
-		p_sr = points2pal(pe_sr,0,28)
-		vert_palette(grid_map,p_sr,1)
-		iterator[0] = tick(iterator[0],0,360,-2)
-		iterator[1] = tick(iterator[1],0,360,2)
+		#top = hsv2rgb(iterator[1],.75,0.5+mid)
+		#bot = hsv2rgb(iterator[0],1,0.5+bass)
+		#pe_sr =[[0,28],[top[0],bot[0]],\
+		#	       [top[1],bot[1]],\
+		#	       [top[2],bot[2]]]
+		#p_sr = points2pal(pe_sr,0,28)
+		#vert_palette(grid_map,p_sr,1)
+		#iterator[0] = tick(iterator[0],0,360,-2)
+		#iterator[1] = tick(iterator[1],0,360,2)
 	elif displayMode == 8:
 		solid_color(allstrips,0,1,1)
 	elif displayMode == 13: # morning glow (90min fade in at time)

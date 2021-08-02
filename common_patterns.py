@@ -3,7 +3,6 @@ from numpy import polyfit, polyval
 
 pixels = [(0,0,0)] * 512
 
-
 def hsv2rgb(h, s, v):
     h = float(h)
     s = float(s)
@@ -24,8 +23,6 @@ def hsv2rgb(h, s, v):
     elif hi == 5: r, g, b = v, p, q
     r, g, b = int(r * 255), int(g * 255), int(b * 255)
     return r, g, b
-
-#def linear_fit(x,a,b
 
 def points2pal(entries,fit,res):
 	x_vals = entries[0]
@@ -90,15 +87,14 @@ def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 	return [iter,0,360,increment]
 
 def diag_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
-        client = opc.Client('localhost:7890')
-        for j in range(len(grid_map[0])):
-                for i in range(len(grid_map)):
-                        if grid_map[i][j] >= 0:
-                                #print(grid_map[i][j])
+	client = opc.Client('localhost:7890')
+	for j in range(len(grid_map[0])):
+		for i in range(len(grid_map)):
+			if grid_map[i][j] >= 0:
 				d = math.sqrt(i**2 + j**2)
-                                pixels[grid_map[i][j]] = hsv2rgb((iter+skew*d+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
-        client.put_pixels(pixels)
-        return [iter,0,360,increment]
+				pixels[grid_map[i][j]] = hsv2rgb((iter+skew*d+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
+	client.put_pixels(pixels)
+	return [iter,0,360,increment]
 
 def vert_palette(grid_map,palette,brightness):
 	client = opc.Client('localhost:7890')
