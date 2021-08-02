@@ -58,11 +58,14 @@ class FunctionMap():
     def __init__(self,func_tuple_map,final_ts):
         funcs = []
         deltas = []
-        for func, delta in func_tuple_map:
+        tracklist = []
+        for func, delta, tracked in func_tuple_map:
             funcs.append(func)
             deltas.append(delta)
+            tracklist.append(tracked)
         self.funcs = funcs
         self.deltas = deltas
+        self.tracklist = tracklist
         self.final_ts = final_ts
     
     def get_func_index(self,ts):
@@ -83,11 +86,11 @@ class FunctionMap():
     def completion(self,ts):
         func_index = self.get_func_index(ts)
         if func_index == 0:
-            return 0.0
+            return float(0.0)
         else:
             curr_len = ts - (self.final_ts + self.deltas[func_index])
             full_len = self.deltas[func_index] - self.deltas[func_index-1]
-            return curr_len / full_len
+            return float(curr_len / full_len)
 
 class AlarmClockDisplayMode(DisplayMode):
     def __init__(self, label, func_tuple_map): # function map should include time deltas
@@ -110,15 +113,18 @@ class AlarmClockDisplayMode(DisplayMode):
             off()
         else:
             func = self.func_map.funcs[func_index]
-            func(iterator, self.func_map.completion(curr_ts))
+            if self.func_map.tracklist[func_index]:
+                func(iterator, self.func_map.completion(curr_ts))
+            else:
+                func(iterator)
 
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(allstrips,iterator[0],0.5,completion))
     return iterator
 
-rainbow_clock_map = {(off, -2*60*60),
-                     (solid_rainbow_clock, 0),
-                     (vert_rainbow, 1*60*60)}
+rainbow_clock_map = {(off, -2*60*60, False),
+                     (solid_rainbow_clock, 0, True),
+                     (vert_rainbow, 1*60*60, False)}
 dm_rainbow_clock = AlarmClockDisplayMode('Rainbow Clock', rainbow_clock_map)
 
 mode_list = [dm_off,
