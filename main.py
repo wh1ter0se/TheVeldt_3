@@ -1,16 +1,18 @@
 import DisplayModes
 
-def pick_func():
+def pick_dm():
     i = 1
-    funcs = {}
-    for label, func in DisplayModes.mode_list:
-        print(str(i) + ') ' + label)
-        funcs.append(func)
+    dms = []
+    #for label, func in DisplayModes.mode_list:
+    for dm in DisplayModes.mode_list:
+        print(str(i) + ') ' + dm.label)
+        dms.append(dm)
+        i += 1
     choice = int(input('Pick Function ID: '))
-    selected_func = funcs[choice-1]
-    return selected_func
+    selected_dm = dms[choice-1]
+    return selected_dm
 
 iterator = [0,0,0]
-func = pick_func()
+dm = pick_dm()
 while True:
-    func(iterator)
+    dm.run()
