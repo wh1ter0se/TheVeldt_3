@@ -138,6 +138,7 @@ rainbow_clock_map = {(off, -2*60*60, False),
 dm_rainbow_clock = AlarmClockDisplayMode('Rainbow Clock', rainbow_clock_map)
 
 mode_list = [dm_off,
+             dm_rainbow_striptest,
              dm_solid_rainbow,
              dm_rainbow,
              dm_vert_rainbow,
