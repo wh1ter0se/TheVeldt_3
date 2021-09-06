@@ -44,6 +44,12 @@ def rainbow(iterator):
 
 dm_rainbow = DisplayMode('Rainbow', rainbow)
 
+def rainbow_striptest(iterator):
+    iterator[0] = cp.ftick(cp.rainbow(House.allstrips,iterator[0],3.0,1.0,2.5,3.0))
+    return iterator
+
+dm_rainbow_striptest = DisplayMode('Rainbow Striptest', rainbow_striptest)
+
 def vert_rainbow(iterator):
     iterator[0] = cp.ftick(cp.vert_rainbow(curr_house.grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
     return iterator
