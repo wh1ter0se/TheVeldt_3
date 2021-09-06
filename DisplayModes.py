@@ -1,7 +1,7 @@
 #from common_patterns import *
 from numpy.core.arrayprint import DatetimeFormat
 from numpy.core.numeric import full
-import common_patterns as cp
+import CommonPatterns as cp
 import datetime
 from RoomConstants import *
 
@@ -27,31 +27,31 @@ class DisplayMode():
         print('running')
 
 def off(iterator=None):
-    cp.solid_color(allstrips,0,0,0)
+    cp.solid_color(curr_house.allstrips,0,0,0)
     return iterator
 
 dm_off = DisplayMode('Off', off)
 
 def solid_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.solid_rainbow(allstrips,iterator[0],0.5,1.0))
+    iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
     return iterator
 
 dm_solid_rainbow = DisplayMode('Solid Rainbow', solid_rainbow)
 
 def rainbow(iterator):
-    iterator[0] = cp.ftick(cp.rainbow(allstrips,iterator[0],3.0,1.0,2.5,3.0))
+    iterator[0] = cp.ftick(cp.rainbow(curr_house.allstrips,iterator[0],3.0,1.0,2.5,3.0))
     return iterator
 
 dm_rainbow = DisplayMode('Rainbow', rainbow)
 
 def vert_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.vert_rainbow(grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
+    iterator[0] = cp.ftick(cp.vert_rainbow(curr_house.grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
     return iterator
 
 dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
 
 def diag_rainbow(iterator):
-    iterator[0] = cp.ftick(diag_rainbow(grid_map,iterator[0],-2.0,0.3125,7.5,1.0,1.0))
+    iterator[0] = cp.ftick(diag_rainbow(curr_house.grid_map,iterator[0],-2.0,0.3125,7.5,1.0,1.0))
     return iterator
 
 class FunctionMap():
@@ -69,6 +69,8 @@ class FunctionMap():
         self.final_ts = final_ts
     
     def get_func_index(self,ts):
+        dt = datetime.datetime.utcfromtimestamp(ts)
+        print('Current time: ' + str(dt.hour) + ':' + str(dt.minute))
         for i in range(1,len(self.funcs)):
             end_ts = self.final_ts + self.deltas[i]
             stale_end_ts = self.final_ts + self.deltas[i-1]
@@ -114,12 +116,14 @@ class AlarmClockDisplayMode(DisplayMode):
         else:
             func = self.func_map.funcs[func_index]
             if self.func_map.tracklist[func_index]:
-                func(iterator, self.func_map.completion(curr_ts))
+                progress = self.func_map.completion(curr_ts)
+                print(progress)
+                func(self.iterator, progress)
             else:
-                func(iterator)
+                func(self.iterator)
 
 def solid_rainbow_clock(iterator,completion):
-    iterator[0] = cp.ftick(cp.solid_rainbow(allstrips,iterator[0],0.5,completion))
+    iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
     return iterator
 
 rainbow_clock_map = {(off, -2*60*60, False),
