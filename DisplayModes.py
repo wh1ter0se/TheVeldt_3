@@ -34,7 +34,7 @@ def off(iterator=None):
 dm_off = DisplayMode('Off', off)
 
 def white_striptest(iterator):
-    iterator[0] = cp.ftick(cp.solid_color(House.allstrips,0,0,1))
+    cp.solid_color(House.allstrips,0,0,1)
     return iterator
 
 dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
