@@ -3,6 +3,8 @@ from numpy import polyfit, polyval
 
 pixels = [(0,0,0)] * 512
 
+client_port = 'localhost:7892'
+
 def hsv2rgb(h, s, v):
     h = float(h)
     s = float(s)
@@ -54,20 +56,20 @@ def ftick(tickdata):
 	return tick(tickdata[0],tickdata[1],tickdata[2],tickdata[3])
 
 def solid_rainbow(line_map,iter,increment,brightness):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	for x in line_map:
 		pixels[x] = hsv2rgb(iter,1.0,brightness)
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
 def solid_color(line_map,hue,saturation,brightness):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	for x in line_map:
 		pixels[x] = hsv2rgb(hue,saturation,brightness)
 	client.put_pixels(pixels)
 
 def rainbow(line_map,iter,increment,brightness,skew,sinK):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	indx = line_map
 	delta = 0
 	for i in indx:
@@ -77,7 +79,7 @@ def rainbow(line_map,iter,increment,brightness,skew,sinK):
 	return [iter,0,360,increment]
 
 def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
@@ -86,8 +88,18 @@ def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
+def horizont_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
+	client = opc.Client(client_port)
+	for i in range(len(grid_map[0])):
+		for j in range(len(grid_map)):
+			if grid_map[i][j] >= 0:
+				#print(grid_map[i][j])
+				pixels[grid_map[i][j]] = hsv2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
+	client.put_pixels(pixels)
+	return [iter,0,360,increment]
+
 def diag_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
@@ -97,7 +109,7 @@ def diag_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 	return [iter,0,360,increment]
 
 def vert_palette(grid_map,palette,brightness):
-	client = opc.Client('localhost:7890')
+	client = opc.Client(client_port)
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:

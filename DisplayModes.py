@@ -12,10 +12,11 @@ def unix_time(dt):
 	return (dt-epoch).total_seconds() * 1.0
 
 class DisplayMode():
-    def __init__(self,label,func,vars=None,init_func=None):
+    def __init__(self,label,func,vars=None,init_func=None,uses_palette=False,palette=None):
         self.label = label
         self.func = func
         self.init_func=init_func
+        self.uses_palette = uses_palette
         self.iterator = [0,0,0]
         self.is_init = True
 
