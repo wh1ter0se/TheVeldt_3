@@ -33,6 +33,12 @@ def off(iterator=None):
 
 dm_off = DisplayMode('Off', off)
 
+def white_striptest(iterator):
+    iterator[0] = cp.ftick(cp.solid_color(House.allstrips,0,0,1))
+    return iterator
+
+dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
+
 def solid_rainbow(iterator):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
     return iterator
@@ -139,6 +145,7 @@ rainbow_clock_map = {(off, -2*60*60, False),
 dm_rainbow_clock = AlarmClockDisplayMode('Rainbow Clock', rainbow_clock_map)
 
 mode_list = [dm_off,
+             dm_white_striptest,
              dm_rainbow_striptest,
              dm_solid_rainbow,
              dm_rainbow,
