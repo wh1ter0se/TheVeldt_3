@@ -37,6 +37,7 @@ class House():
 			if position >= start and position < stop:
 				match = i
 				break
+			i += 1
 		if match == -1:
 			return -1
 		return self.invert_map[match]		

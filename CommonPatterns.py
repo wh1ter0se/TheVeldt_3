@@ -63,7 +63,7 @@ def pal2rgb(palette,palette_pos):
 def palpos2rgb(palette,palette_pos,LED_pos):
 	r, g, b = pal2rgb(palette,palette_pos)
 	if rc.curr_house.check_invert(LED_pos):
-		r, g, b = flip_channels([r,g,b],0,1)
+		r, g, b = flip_channels([r,g,b],0,2)
 	return r, g, b
 
 def tick(iter,floor,ceil,increment):

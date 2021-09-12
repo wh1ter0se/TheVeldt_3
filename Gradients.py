@@ -21,8 +21,8 @@ class Gradient():
 				if self.points[j][0] <= pos and pos < self.points[j+1][0]:
 					progress = (pos - self.points[j][0]) / (self.points[j+1][0] - self.points[j][0])
 					r = ((1-progress)*self.points[j][1] + progress*self.points[j+1][1])/2
-					g = ((1-progress)*self.points[j][1] + progress*self.points[j+1][2])/2
-					b = ((1-progress)*self.points[j][1] + progress*self.points[j+1][3])/2
+					g = ((1-progress)*self.points[j][2] + progress*self.points[j+1][2])/2
+					b = ((1-progress)*self.points[j][3] + progress*self.points[j+1][3])/2
 					return r, g, b
 				
 
