@@ -34,10 +34,18 @@ def flip_channels(rgb,pos1,pos2):
 	rgb[pos2] = temp
 	return rgb[0], rgb[1], rgb[2]
 
+def reorder_channels(rgb,RGB_order):
+	a = RGB_order[0]
+	b = RGB_order[1]
+	c = RGB_order[2]
+	return rgb[a], rgb[b], rgb[c]
+
 def hsvpos2rgb(h,s,v,pos):
 	r, g, b = hsv2rgb(h,s,v)
-	if rc.curr_house.check_invert(pos):
-		r, g, b = flip_channels([r,g,b],0,1)
+	#if rc.curr_house.check_invert(pos):
+	#	r, g, b = flip_channels([r,g,b],0,1)
+	RGB_order = rc.curr_house.get_RGB_order(pos)
+	r, g, b = reorder_channels([r,g,b],RGB_order)
 	return r, g, b
 
 def points2pal(entries,fit,res):
@@ -62,8 +70,10 @@ def pal2rgb(palette,palette_pos):
 
 def palpos2rgb(palette,palette_pos,LED_pos):
 	r, g, b = pal2rgb(palette,palette_pos)
-	if rc.curr_house.check_invert(LED_pos):
-		r, g, b = flip_channels([r,g,b],0,2)
+	#if rc.curr_house.check_invert(LED_pos):
+	#	r, g, b = flip_channels([r,g,b],0,2)
+	RGB_order = rc.curr_house.get_RGB_order(LED_pos)
+	r, g, b = reorder_channels([r,g,b],RGB_order)
 	return r, g, b
 
 def tick(iter,floor,ceil,increment):
