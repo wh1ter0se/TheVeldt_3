@@ -1,4 +1,13 @@
 class House():
+	invert_map = [False,
+				  False,
+				  False,
+				  False,
+				  False,
+				  False,
+				  False,
+				  False]
+
 	sky = []
 	splash = []
 	grnd = []
@@ -18,6 +27,19 @@ class House():
 
 	def __init__(init_grid_map):
 		init_grid_map()
+
+	def check_invert(self,position):
+		i = 0
+		match = -1
+		for invert in self.invert_map:
+			start = i * 64
+			stop = (i+1)*64
+			if position >= start and position < stop:
+				match = i
+				break
+		if match == -1:
+			return -1
+		return self.invert_map[match]		
 
 
 class Washington(House):
@@ -65,6 +87,15 @@ class Washington(House):
 		super().__init__(self.init_grid_map)
 
 class State(House):
+
+	invert_map = [True,
+				  False,
+				  True,
+				  True,
+				  True,
+				  True,
+				  False,
+				  False]
 
 	splashA = list(range(0,29))
 	splashB = list(range(64,64+47))

@@ -17,6 +17,7 @@ class DisplayMode():
         self.func = func
         self.init_func=init_func
         self.uses_palette = uses_palette
+        self.palette = palette
         self.iterator = [0,0,0]
         self.is_init = True
 
@@ -38,6 +39,9 @@ def white_striptest(iterator):
     return iterator
 
 dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
+
+def solid_color(iterator):
+    iterator[0] = cp.ftick(cp.solid_color())
 
 def solid_rainbow(iterator):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))

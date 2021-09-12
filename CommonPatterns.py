@@ -1,4 +1,5 @@
 import opc, time, math, itertools, numpy
+import RoomConstants as rc
 from numpy import polyfit, polyval
 
 pixels = [(0,0,0)] * 512
@@ -26,6 +27,19 @@ def hsv2rgb(h, s, v):
     r, g, b = int(r * 255), int(g * 255), int(b * 255)
     return r, g, b
 
+# positions zero indexed to the order of RGB
+def flip_channels(rgb,pos1,pos2):
+	temp = rgb[pos1]
+	rgb[pos1] = rgb[pos2]
+	rgb[pos2] = temp
+	return rgb[0], rgb[1], rgb[2]
+
+def hsvpos2rgb(h,s,v,pos):
+	r, g, b = hsv2rgb(h,s,v)
+	if rc.curr_house.check_invert(pos):
+		r, g, b = flip_channels([r,g,b],0,1)
+	return r, g, b
+
 def points2pal(entries,fit,res):
 	x_vals = entries[0]
 	yR_vals = entries[1]
@@ -43,8 +57,14 @@ def points2pal(entries,fit,res):
 		output[i] = (polyval(Rfit,i),polyval(Gfit,i),polyval(Bfit,i))
 	return output
 
-def pal2rgb(palette,pos):
-	return palette[pos]
+def pal2rgb(palette,palette_pos):
+	return palette[palette_pos]
+
+def palpos2rgb(palette,palette_pos,LED_pos):
+	r, g, b = pal2rgb(palette,palette_pos)
+	if rc.curr_house.check_invert(LED_pos):
+		r, g, b = flip_channels([r,g,b],0,1)
+	return r, g, b
 
 def tick(iter,floor,ceil,increment):
 	iter += increment
@@ -58,14 +78,14 @@ def ftick(tickdata):
 def solid_rainbow(line_map,iter,increment,brightness):
 	client = opc.Client(client_port)
 	for x in line_map:
-		pixels[x] = hsv2rgb(iter,1.0,brightness)
+		pixels[x] = hsvpos2rgb(iter,1.0,brightness,x)
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
 def solid_color(line_map,hue,saturation,brightness):
 	client = opc.Client(client_port)
 	for x in line_map:
-		pixels[x] = hsv2rgb(hue,saturation,brightness)
+		pixels[x] = hsvpos2rgb(hue,saturation,brightness,x)
 	client.put_pixels(pixels)
 
 def rainbow(line_map,iter,increment,brightness,skew,sinK):
@@ -73,7 +93,7 @@ def rainbow(line_map,iter,increment,brightness,skew,sinK):
 	indx = line_map
 	delta = 0
 	for i in indx:
-		pixels[i] = hsv2rgb((iter+skew*delta+math.sin(i)*sinK)%360,1.0,brightness)
+		pixels[i] = hsvpos2rgb((iter+skew*delta+math.sin(i)*sinK)%360,1.0,brightness,i)
 		delta += 1
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
@@ -84,7 +104,7 @@ def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
 				#print(grid_map[i][j])
-				pixels[grid_map[i][j]] = hsv2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
@@ -94,7 +114,7 @@ def horizont_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 		for j in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
 				#print(grid_map[i][j])
-				pixels[grid_map[i][j]] = hsv2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
@@ -104,7 +124,7 @@ def diag_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
 				d = math.sqrt(i**2 + j**2)
-				pixels[grid_map[i][j]] = hsv2rgb((iter+skew*d+math.sin(iter*sinA)*sinT)%360,1.0,brightness)
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*d+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
