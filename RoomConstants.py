@@ -25,7 +25,7 @@ class House():
 			self.grid_map[new_pos[0]][new_pos[1]] = indx
 			count += 1
 
-	def __init__(init_grid_map):
+	def __init__(self,init_grid_map):
 		init_grid_map()
 
 	def check_invert(self,position):
@@ -106,7 +106,8 @@ class State(House):
 	desk = list(range(64*2,64*2+37+23))
 
 	def init_grid_map(self):
-		super().add_strip_to_grid_map(self.splashA)
+		print('init grid map')
+		#super().add_strip_to_grid_map(self.splashA,)
 
 	def __init__(self):
 		self.splash = self.splashA + self.splashB + self.splashC + \
@@ -118,4 +119,4 @@ class State(House):
 
 		super().__init__(self.init_grid_map)
 
-curr_house = State
+curr_house = State()
