@@ -91,7 +91,7 @@ class State(House):
 
 	RGB_map = [[2,0,1],
 			   [0,1,2],
-			   [2,0,1],
+			   [0,1,2],
 			   [2,0,1],
 			   [2,0,1],
 			   [2,0,1],
@@ -101,7 +101,7 @@ class State(House):
 	splashA = list(range(0,29))
 	splashB = list(range(64,64+47))
 	splashC = list(range(64*3,64*3+27))
-	splashD = list(range(64*2+37,64*2+37+23))
+	splashD = list(range(64*4,64*4+23))
 	splashE = list(range(64*5,64*5+23))
 
 	desk = list(range(64*2,64*2+37+23))
