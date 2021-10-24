@@ -116,7 +116,8 @@ def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 			#	for indx in grid_map[i][j]:
 			#		pixels[indx] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 			#elif isinstance(type(grid_map[i][j]),int) and grid_map[i][j] != -1:
-			pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
+			if grid_map[i][j] >= 0:
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 

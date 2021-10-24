@@ -51,6 +51,8 @@ class House():
 				break
 			i += 1
 		if match == -1:
+			print("RGB order match not found: [" + str(position) + "]")
+			#return [0,1,2]
 			return -1
 		return self.RGB_map[match]		
 
@@ -115,7 +117,7 @@ class State(House):
 	splashC = list(range(64*3,64*3+27))
 	splashD = list(range(64*4,64*4+23))
 	splashE = list(range(64*5,64*5+23))
-
+	
 	desk = list(range(64*2,64*2+37+23))
 
 	def init_grid_map(self):
