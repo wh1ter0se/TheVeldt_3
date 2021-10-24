@@ -120,22 +120,28 @@ class State(House):
 	
 	desk = list(range(64*2,64*2+37+23))
 
+	halo = list(range(64*7,64*7 + 20))
+	
+	halo_x_offset = 2
+	halo_y_offset = 2
+
 	def init_grid_map(self):
 		print('init grid map')
-		super().add_strip_to_grid_map(self.splashA[:20],[0,20],[0,-1],False)
-		super().add_strip_to_grid_map(self.splashA[20:],[1,0],[1,0],False)
-		super().add_strip_to_grid_map(self.splashB[:20],[10,20],[0,-1],False)
-		super().add_strip_to_grid_map(self.splashB[20:27],[11,0],[1,0],False)
-		super().add_strip_to_grid_map(self.splashB[27:],[18,1],[0,1],False)
-		super().add_strip_to_grid_map(self.splashC[:20],[26,20],[0,-1],False)
-		super().add_strip_to_grid_map(self.splashC[20:],[25,0],[-1,0],False)
-		super().add_strip_to_grid_map(self.splashD[:16],[34,20],[0,-1],False)
-		super().add_strip_to_grid_map(self.splashD[16:],[33,4],[-1,0],False)
-		super().add_strip_to_grid_map(self.splashE[:16],[42,20],[0,-1],False)
-		super().add_strip_to_grid_map(self.splashE[16:],[41,4],[-1,0],False)
+		super().add_strip_to_grid_map(self.splashA[:20],[0+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
+		super().add_strip_to_grid_map(self.splashA[20:],[1+self.halo_x_offset,0+self.halo_y_offset],[1,0],False)
+		super().add_strip_to_grid_map(self.splashB[:20],[10+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
+		super().add_strip_to_grid_map(self.splashB[20:27],[11+self.halo_x_offset,0+self.halo_y_offset],[1,0],False)
+		super().add_strip_to_grid_map(self.splashB[27:],[18+self.halo_x_offset,1+self.halo_y_offset],[0,1],False)
+		super().add_strip_to_grid_map(self.splashC[:20],[26+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
+		super().add_strip_to_grid_map(self.splashC[20:],[25+self.halo_x_offset,0+self.halo_y_offset],[-1,0],False)
+		super().add_strip_to_grid_map(self.splashD[:16],[34+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
+		super().add_strip_to_grid_map(self.splashD[16:],[33+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
+		super().add_strip_to_grid_map(self.splashE[:16],[42+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
+		super().add_strip_to_grid_map(self.splashE[16:],[41+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
 		#super().add_strip_to_grid_map(self.desk[:15],[11,15],[0,0],False)
 		#super().add_strip_to_grid_map(self.desk[15:22],[11,15],[1,0],False)
 		#super().add_strip_to_grid_map(self.desk[22:],[17,15],[1,0],False)
+		super().add_strip_to_grid_map(self.halo[:],[0,0],[1,0],True)
 		#print(self.grid_map[:20,:15])
 		self.print_grid_map()
 
