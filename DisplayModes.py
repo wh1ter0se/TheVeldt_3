@@ -28,6 +28,11 @@ class DisplayMode():
         self.iterator = self.func(self.iterator)
         print('running')
 
+class DisplayModeList():
+    def __init__(self,label,dms):
+        self.label = label
+        self.dms = dms
+
 def off(iterator=None):
     cp.solid_color(curr_house.allstrips,0,0,0)
     return iterator
@@ -67,9 +72,17 @@ def vert_rainbow(iterator):
 
 dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
 
+def horizont_rainbow(iterator):
+    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
+    return iterator
+
+dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)
+
 def diag_rainbow(iterator):
     iterator[0] = cp.ftick(diag_rainbow(curr_house.grid_map,iterator[0],-2.0,0.3125,7.5,1.0,1.0))
     return iterator
+
+dm_diag_rainbow = DisplayMode("Diagonal Rainbow", diag_rainbow)
 
 class FunctionMap():
     def __init__(self,func_tuple_map,final_ts):
@@ -155,3 +168,22 @@ mode_list = [dm_off,
              dm_rainbow,
              dm_vert_rainbow,
              dm_rainbow_clock]
+
+striptest_dm_list = DisplayModeList("Striptests",
+                    [dm_off,
+                     dm_white_striptest,
+                     dm_rainbow_striptest])
+
+standard_dm_list = DisplayModeList("Standard",
+                   [dm_off,
+                    dm_solid_rainbow,
+                    dm_rainbow])
+
+grid_map_dm_list = DisplayModeList("Grid-map patterns",
+                   [dm_vert_rainbow,
+                    dm_horizont_rainbow,
+                    dm_diag_rainbow])
+
+dm_list_dir = [striptest_dm_list,
+               standard_dm_list,
+               grid_map_dm_list]
