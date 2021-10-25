@@ -121,7 +121,7 @@ class State(House):
 	
 	desk = list(range(64*2,64*2+37+23))
 
-	halo = list(range(64*7,64*7 + 20))
+	halo = list(range(64*7,64*7 + 44))
 	
 	halo_x_offset = 2
 	halo_y_offset = 2
