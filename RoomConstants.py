@@ -16,7 +16,7 @@ class House():
 	allstrips = list(range(0,64*8))
 
 	# rows, then cols
-	grid_map = np.array([[-1 for y in range(31)] for x in range(56)],dtype=object)
+	grid_map = np.array([[-1 for y in range(32)] for x in range(57)],dtype=object)
 
 	def add_strip_to_grid_map(self,strip,start_pos,direction_uvec,rev):
 		if rev:
