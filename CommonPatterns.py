@@ -125,11 +125,11 @@ def vert_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 
 def horizont_rainbow(grid_map,iter,increment,brightness,skew,sinA,sinT):
 	client = opc.Client(client_port)
-	for i in range(len(grid_map[0])):
-		for j in range(len(grid_map)):
+	for j in range(len(grid_map[0])):
+		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
 				#print(grid_map[i][j])
-				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*j+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+skew*i+math.sin(iter*sinA)*sinT)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
@@ -148,5 +148,5 @@ def vert_palette(grid_map,palette,brightness):
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
-				pixels[grid_map[i][j]] = brightness * pal2rgb(palette,j)
+				pixels[grid_map[i][j]] = brightness * palpos2rgb(palette,j,grid_map[i][j])
 	client.put_pixels(pixels)
