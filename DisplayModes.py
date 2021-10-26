@@ -74,7 +74,7 @@ def vert_rainbow(iterator):
 dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
 
 def horizont_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-3.0,1,3.25,0.0,0.0))
+    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-4.0,1,5,0.0,0.0))
     return iterator
 
 dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)

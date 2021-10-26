@@ -125,7 +125,7 @@ class State(House):
 
 	grid_map = np.array([[-1 for y in range(32)] for x in range(128)],dtype=object)
 	
-	halo_x_offset = 48
+	halo_x_offset = 54
 	halo_y_offset = 2
 
 	def init_grid_map(self):
