@@ -16,7 +16,7 @@ class House():
 	allstrips = list(range(0,64*8))
 
 	# rows, then cols
-	grid_map = np.array([[-1 for y in range(32)] for x in range(57)],dtype=object)
+	grid_map = np.array([[-1 for y in range(32)] for x in range(64)],dtype=object)
 
 	def add_strip_to_grid_map(self,strip,start_pos,direction_uvec,rev):
 		if rev:
@@ -122,8 +122,10 @@ class State(House):
 	desk = list(range(64*2,64*2+37+23))
 
 	halo = list(range(64*7,64*7 + 44))
+
+	grid_map = np.array([[-1 for y in range(32)] for x in range(128)],dtype=object)
 	
-	halo_x_offset = 2
+	halo_x_offset = 48
 	halo_y_offset = 2
 
 	def init_grid_map(self):

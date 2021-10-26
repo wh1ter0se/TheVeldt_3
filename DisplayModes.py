@@ -3,6 +3,7 @@ from numpy.core.arrayprint import DatetimeFormat
 from numpy.core.numeric import full
 import CommonPatterns as cp
 import datetime
+import Gradients
 from RoomConstants import *
 
 init = True
@@ -73,7 +74,7 @@ def vert_rainbow(iterator):
 dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
 
 def horizont_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
+    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-3.0,1,3.25,0.0,0.0))
     return iterator
 
 dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)
@@ -83,6 +84,11 @@ def diag_rainbow(iterator):
     return iterator
 
 dm_diag_rainbow = DisplayMode("Diagonal Rainbow", diag_rainbow)
+
+def vert_pallete(iterator):
+    iterator[0] = cp.vert_palette(curr_house.grid_map,Gradients.pe_caesar,1.0)
+
+dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
 class FunctionMap():
     def __init__(self,func_tuple_map,final_ts):
@@ -174,7 +180,7 @@ striptest_dm_list = DisplayModeList("Striptests",
                      dm_white_striptest,
                      dm_rainbow_striptest])
 
-standard_dm_list = DisplayModeList("Standard",
+standard_dm_list = DisplayModeList("Standard patterns",
                    [dm_off,
                     dm_solid_rainbow,
                     dm_rainbow])
@@ -184,6 +190,10 @@ grid_map_dm_list = DisplayModeList("Grid-map patterns",
                     dm_horizont_rainbow,
                     dm_diag_rainbow])
 
+palette_dm_list = DisplayModeList("Palette patterns",
+                  [dm_vert_palette])
+
 dm_list_dir = [striptest_dm_list,
                standard_dm_list,
-               grid_map_dm_list]
+               grid_map_dm_list,
+               palette_dm_list]
