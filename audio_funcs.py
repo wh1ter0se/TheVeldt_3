@@ -14,7 +14,7 @@ def read_levels():
 		pass
 	if(ser.in_waiting>0):
 		line = ser.readline().decode('utf-8')+ ' '
-		#print(line)
+		print(line)
 		indx = 0
 		if isValid(levels):
 			for i in range(7):
@@ -23,8 +23,6 @@ def read_levels():
 			return levels
 		else:
 			return levels
-	else:
-		return levels
 
 def isValid(levels):
 	for i in range(7):
@@ -107,6 +105,6 @@ levels = sample_levels(2000)
 while 42:
 	#levels = decay(levels,sampleLevels(150),0.75)
 	levels = read_levels()
-	print_levels(levels)
+	#print_levels(levels)
 	#plotLevels(levels)
 #	plotLevels(levels)
