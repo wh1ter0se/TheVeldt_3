@@ -1,7 +1,7 @@
 import serial, time, datetime
 #import matplotlib.pyplot as plt
 #from veldt_manager import unix_millis
-ser = serial.Serial('/dev/ttyUSB0',9600,timeout=1)
+ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1)
 ser.flush()
 
 def unix_millis(dt):
@@ -13,12 +13,12 @@ def read_levels():
 	while(ser.in_waiting<1):
 		pass
 	if(ser.in_waiting>0):
-		line = ser.readline().decode('utf-8')+ ' '
+		line = ser.readline()+ ' ' # .decode('utf-8')
 		print(line)
 		indx = 0
 		if isValid(levels):
 			for i in range(7):
-				levels[i] = line[indx:line.find(' ',indx)]
+				levels[i] = int(line[indx:line.find(' ',indx)])
 				indx = line.find(' ',indx)+3
 			return levels
 		else:
