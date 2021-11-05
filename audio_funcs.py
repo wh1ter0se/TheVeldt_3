@@ -81,10 +81,11 @@ def getBand(levels,start,stop):
 	return out
 
 def print_levels(levels):
-	output = ""
-	for i in range(7):
-		output += str(levels[i]) + " "
-	print(output)
+	if levels is not None:
+		output = ""
+		for i in range(7):
+			output += str(levels[i]) + " "
+		print(output)
 
 def plotLevels(levels):
 	scalar = (20/1024)
