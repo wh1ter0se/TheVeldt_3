@@ -91,8 +91,8 @@ class Washington(House):
 		super().add_strip_to_grid_map(self.splashE,[54,15],[0,1],False)
 		super().add_strip_to_grid_map(self.splashF,[53,13],[-1,0],False)
 		super().add_strip_to_grid_map(self.splashG,[69,15],[0,1],False)
-		super().add_strip_to_grid_map(self.desk[:7],[60,25],[1,0],False)
-		super().add_strip_to_grid_map(self.desk[7:],[68,25],[1,0],False)
+		#super().add_strip_to_grid_map(self.desk[:7],[60,25],[1,0],False)
+		#super().add_strip_to_grid_map(self.desk[7:],[68,25],[1,0],False)
 		super().add_strip_to_grid_map(self.bed,[0,27],[1,0],True)
 
 	def __init__(self):
