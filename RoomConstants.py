@@ -91,8 +91,8 @@ class Washington(House):
 		super().add_strip_to_grid_map(self.splashE,[54,15],[0,1],False)
 		super().add_strip_to_grid_map(self.splashF,[53,13],[-1,0],False)
 		super().add_strip_to_grid_map(self.splashG,[69,15],[0,1],False)
-		#super().add_strip_to_grid_map(self.desk[:7],[60,25],[1,0],False)
-		#super().add_strip_to_grid_map(self.desk[7:],[68,25],[1,0],False)
+		super().add_strip_to_grid_map(self.desk[:7],[60,25],[1,0],False)
+		super().add_strip_to_grid_map(self.desk[7:],[68,25],[1,0],False)
 		super().add_strip_to_grid_map(self.bed,[0,27],[1,0],True)
 
 	def __init__(self):
@@ -146,7 +146,7 @@ class State(House):
 		super().add_strip_to_grid_map(self.splashD[16:],[33+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
 		super().add_strip_to_grid_map(self.splashE[:16],[42+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
 		super().add_strip_to_grid_map(self.splashE[16:],[41+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
-		super().add_strip_to_grid_map(self.desk[:15],[11+self.halo_x_offset,15+self.halo_y_offset],[0,0],False)
+		#super().add_strip_to_grid_map(self.desk[:15],[11+self.halo_x_offset,15+self.halo_y_offset],[0,0],False)
 		#super().add_strip_to_grid_map(self.desk[15:22],[11,15],[1,0],False)
 		#super().add_strip_to_grid_map(self.desk[22:],[17,15],[1,0],False)
 		super().add_strip_to_grid_map(self.halo[:],[0,0],[1,0],True)
