@@ -7,7 +7,7 @@ def unix_millis(dt):
         epoch = datetime.datetime.utcfromtimestamp(0)
         return (dt-epoch).total_seconds() * 1000.0
 
-def readLevels():
+def read_levels():
 	if(ser.in_waiting>0):
 		levels = [-1,-1,-1,-1,-1,-1,-1]
 		line = ser.readline()+ ' '
@@ -32,12 +32,12 @@ def isValid(levels):
 			return False
 	return True
 
-def sampleLevels(windowms):
+def sample_levels(windowms):
 	start = unix_millis(datetime.datetime.now())
 	sums = [0,0,0,0,0,0,0]
 	valid = 0
 	while unix_millis(datetime.datetime.now()) < start + windowms:
-		line = readLevels()
+		line = read_levels()
 		if isValid(line):
 			for i in range(7):
 				sums[i] = sums[i] + int(line[i])
@@ -80,9 +80,11 @@ def getBand(levels,start,stop):
 	out = out / (stop+1-start)
 	return out
 
-def printLevels(levels):
+def print_levels(levels):
+	output = ""
 	for i in range(7):
-		print(levels[i])
+		output += str(levels[i]) + " "
+	print(output)
 
 def plotLevels(levels):
 	scalar = (20/1024)
@@ -94,8 +96,11 @@ def plotLevels(levels):
 			line +=  '-'
 		print(line)
 
-levels = sampleLevels(2000)
+
+levels = sample_levels(2000)
 while 42:
-	levels = decay(levels,sampleLevels(150),0.75)
-	plotLevels(levels)
+	#levels = decay(levels,sampleLevels(150),0.75)
+	levels = read_levels()
+	print_levels(levels)
+	#plotLevels(levels)
 #	plotLevels(levels)
