@@ -27,15 +27,20 @@ class House():
 				start_pos[1]+count*direction_uvec[1]]
 			if self.grid_map[new_pos[0]][new_pos[1]] == -1:
 				self.grid_map[new_pos[0]][new_pos[1]] = indx
-			#else:
-			#	if not isinstance(self.grid_map[new_pos[0]][new_pos[1]],list):
-			#		self.grid_map[new_pos[0]][new_pos[1]] = [self.grid_map[new_pos[0]][new_pos[1]]]
-			#	self.grid_map[new_pos[0]][new_pos[1]].append(indx)
+			else:
+				if not isinstance(self.grid_map[new_pos[0]][new_pos[1]],list):
+					self.grid_map[new_pos[0]][new_pos[1]] = [self.grid_map[new_pos[0]][new_pos[1]]]
+				self.grid_map[new_pos[0]][new_pos[1]].append(indx)
 			count += 1
 	
 	def print_grid_map(self):
 		for i in range(len(self.grid_map[0,:])):
 			row = self.grid_map[:,i]
+			print(row)
+
+	def print_grid_map_window(self,x_window,y_window):
+		for i in range(y_window[0],y_window[1]):
+			row = self.grid_map[x_window[0]:x_window[1],i]
 			print(row)
 
 	def __init__(self,init_grid_map):
@@ -141,12 +146,13 @@ class State(House):
 		super().add_strip_to_grid_map(self.splashD[16:],[33+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
 		super().add_strip_to_grid_map(self.splashE[:16],[42+self.halo_x_offset,20+self.halo_y_offset],[0,-1],False)
 		super().add_strip_to_grid_map(self.splashE[16:],[41+self.halo_x_offset,4+self.halo_y_offset],[-1,0],False)
-		#super().add_strip_to_grid_map(self.desk[:15],[11,15],[0,0],False)
+		super().add_strip_to_grid_map(self.desk[:15],[11+self.halo_x_offset,15+self.halo_y_offset],[0,0],False)
 		#super().add_strip_to_grid_map(self.desk[15:22],[11,15],[1,0],False)
 		#super().add_strip_to_grid_map(self.desk[22:],[17,15],[1,0],False)
 		super().add_strip_to_grid_map(self.halo[:],[0,0],[1,0],True)
 		#print(self.grid_map[:20,:15])
-		self.print_grid_map()
+		#self.print_grid_map()
+		self.print_grid_map_window([10+self.halo_x_offset,19+self.halo_x_offset],[14+self.halo_y_offset,17+self.halo_y_offset])
 
 	def __init__(self):
 		self.splash = self.splashA + self.splashB + self.splashC + \
