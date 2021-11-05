@@ -8,8 +8,8 @@ def unix_millis(dt):
         return (dt-epoch).total_seconds() * 1000.0
 
 def read_levels():
+	levels = [-1,-1,-1,-1,-1,-1,-1]
 	if(ser.in_waiting>0):
-		levels = [-1,-1,-1,-1,-1,-1,-1]
 		line = ser.readline()+ ' '
 		#print(line)
 		indx = 0
@@ -18,8 +18,8 @@ def read_levels():
 				levels[i] = line[indx:line.find(' ',indx)]
 				indx = line.find(' ',indx)+3
 			return levels
-		else:
-			return levels
+	else:
+		return levels
 
 def isValid(levels):
 	for i in range(7):
