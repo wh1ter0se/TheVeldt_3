@@ -1,4 +1,4 @@
-import serial, time, datetime
+import serial, time, datetime, sys
 #import matplotlib.pyplot as plt
 #from veldt_manager import unix_millis
 ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1)
@@ -10,8 +10,8 @@ def unix_millis(dt):
 
 def read_levels():
 	levels = [-1,-1,-1,-1,-1,-1,-1]
-	while(ser.in_waiting<1):
-		pass
+	#while(ser.in_waiting<1):
+	#	pass
 	if(ser.in_waiting>0):
 		line = ser.readline()+ ' ' # .decode('utf-8')
 		print(line)
@@ -21,8 +21,8 @@ def read_levels():
 				levels[i] = int(line[indx:line.find(' ',indx)])
 				indx = line.find(' ',indx)+3
 			return levels
-		else:
-			return levels
+		# else:
+		# 	return levels
 
 def isValid(levels):
 	for i in range(7):
@@ -102,9 +102,10 @@ def plotLevels(levels):
 
 
 levels = sample_levels(2000)
-while 42:
-	#levels = decay(levels,sampleLevels(150),0.75)
-	levels = read_levels()
-	#print_levels(levels)
-	#plotLevels(levels)
-#	plotLevels(levels)
+if len(sys.argv) > 1:
+	while 42:
+		#levels = decay(levels,sampleLevels(150),0.75)	
+		levels = read_levels()
+		#print_levels(levels)
+		#plotLevels(levels)
+		#plotLevels(levels)
