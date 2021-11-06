@@ -2,6 +2,7 @@
 from numpy.core.arrayprint import DatetimeFormat
 from numpy.core.numeric import full
 import CommonPatterns as cp
+import AudioFuncs as af
 import datetime
 import Gradients
 from RoomConstants import *
@@ -13,82 +14,38 @@ def unix_time(dt):
 	return (dt-epoch).total_seconds() * 1.0
 
 class DisplayMode():
-    def __init__(self,label,func,vars=None,init_func=None,uses_palette=False,palette=None):
+    def __init__(self,label,func,vars=None,init_func=None,
+                 uses_palette=False,palette=None,uses_MSGEQ7=False):
         self.label = label
         self.func = func
+        self.vars = vars
         self.init_func=init_func
         self.uses_palette = uses_palette
         self.palette = palette
         self.iterator = [0,0,0]
         self.is_init = True
+        self.uses_MSGEQ7 = uses_MSGEQ7
+        self.levels = [-1,-1,-1,-1,-1,-1,-1]
+        self.stale_levels = self.levels
 
     def run(self):
         if self.init_func is not None and self.is_init:
-            self.init_func()
+            self.init_func(self)
             self.is_init = False
-        self.iterator = self.func(self.iterator)
+        if self.uses_MSGEQ7:
+            levels = af.read_levels()
+            if levels is not None:
+                self.stale_levels = self.levels
+                self.levels = levels
+            self.iterator = self.func(self.iterator,self.levels)
+        else:
+            self.iterator = self.func(self.iterator)
         print('running')
 
 class DisplayModeList():
     def __init__(self,label,dms):
         self.label = label
         self.dms = dms
-
-def off(iterator=None):
-    cp.solid_color(curr_house.allstrips,0,0,0)
-    return iterator
-
-dm_off = DisplayMode('Off', off)
-
-def white_striptest(iterator):
-    cp.solid_color(House.allstrips,0,0,1)
-    return iterator
-
-dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
-
-def solid_color(iterator):
-    iterator[0] = cp.ftick(cp.solid_color())
-
-def solid_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
-    return iterator
-
-dm_solid_rainbow = DisplayMode('Solid Rainbow', solid_rainbow)
-
-def rainbow(iterator):
-    iterator[0] = cp.ftick(cp.rainbow(curr_house.allstrips,iterator[0],3.0,1.0,2.5,3.0))
-    return iterator
-
-dm_rainbow = DisplayMode('Rainbow', rainbow)
-
-def rainbow_striptest(iterator):
-    iterator[0] = cp.ftick(cp.rainbow(House.allstrips,iterator[0],3.0,1.0,5,0.0))
-    return iterator
-
-dm_rainbow_striptest = DisplayMode('Rainbow Striptest', rainbow_striptest)
-
-def vert_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.vert_rainbow(curr_house.grid_map,iterator[0],-3.0,1,7.5,0.0,0.0))
-    return iterator
-
-dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
-
-def horizont_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],-4.0,1,5,0.0,0.0))
-    return iterator
-
-dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)
-
-def diag_rainbow(iterator):
-    iterator[0] = cp.ftick(cp.diag_rainbow(curr_house.grid_map,iterator[0],-2.0,1.0,7.5,1.0,1.0))
-    return iterator
-
-dm_diag_rainbow = DisplayMode("Diagonal Rainbow", diag_rainbow)
-
-def vert_pallete(iterator):
-    iterator[0] = cp.vert_palette(curr_house.grid_map,Gradients.pe_caesar,1.0)
-
-dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
 class FunctionMap():
     def __init__(self,func_tuple_map,final_ts):
@@ -158,6 +115,104 @@ class AlarmClockDisplayMode(DisplayMode):
             else:
                 func(self.iterator)
 
+def off(iterator=None):
+    cp.solid_color(curr_house.allstrips,0,0,0)
+    return iterator
+
+dm_off = DisplayMode('Off', off)
+
+def white_striptest(iterator):
+    cp.solid_color(House.allstrips,0,0,1)
+    return iterator
+
+dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
+
+def solid_color(iterator=None):
+    iterator[0] = cp.ftick(cp.solid_color())
+
+def solid_color_init(dm):
+    print(" 0      60      120    180    240    300")
+    print("Red   Yellow   Green   Cyan   Blue  Violet")
+    hue = int(input("Hue (0-360)"))
+    dm.vars = [hue]
+
+dm_solid_color = DisplayMode("Solidd Color", solid_color, init_func=solid_color_init)
+
+def solid_rainbow(iterator):
+    iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
+    return iterator
+
+dm_solid_rainbow = DisplayMode('Solid Rainbow', solid_rainbow)
+
+def rainbow(iterator):
+    increment = 3.0
+    brightness = 1.0
+    skew = 2.5
+    sinA = 0.0 # amplitude
+    sinK = 3.0 # frequency
+    iterator[0] = cp.ftick(cp.rainbow(curr_house.allstrips,iterator[0],increment,brightness,skew,sinK))
+    return iterator
+
+dm_rainbow = DisplayMode('Rainbow', rainbow)
+
+def rainbow_striptest(iterator):
+    increment = 3.0
+    brightness = 1.0
+    skew = 5.0
+    sinA = 0.0 # amplitude
+    sinK = 0.0 # frequency
+    iterator[0] = cp.ftick(cp.rainbow(House.allstrips,iterator[0],increment,brightness,skew,sinK))
+    return iterator
+
+dm_rainbow_striptest = DisplayMode('Rainbow Striptest', rainbow_striptest)
+
+def vert_rainbow(iterator):
+    increment = -3.0
+    brightness = 1.0
+    skew = 7.5
+    sinA = 0.0 # amplitude
+    sinK = 0.0 # frequency
+    iterator[0] = cp.ftick(cp.vert_rainbow(curr_house.grid_map,iterator[0],increment,brightness,skew,sinA,sinK))
+    return iterator
+
+dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
+
+def horizont_rainbow(iterator):
+    increment = -4.0
+    brightness = 1.5
+    skew = 5.0
+    sinA = 0.0 # amplitude
+    sinK = 0.0 # frequency
+    iterator[0] = cp.ftick(cp.horizont_rainbow(curr_house.grid_map,iterator[0],increment,brightness,skew,sinA,sinK))
+    return iterator
+
+dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)
+
+def diag_rainbow(iterator):
+    increment = -3.0
+    brightness = 1.0
+    skew = 7.5
+    sinA = 0.0 # amplitude
+    sinK = 0.0 # frequency
+    iterator[0] = cp.ftick(cp.diag_rainbow(curr_house.grid_map,iterator[0],increment,brightness,skew,sinA,sinK))
+    return iterator
+
+dm_diag_rainbow = DisplayMode("Diagonal Rainbow", diag_rainbow)
+
+def vert_pallete(iterator):
+    iterator[0] = cp.vert_palette(curr_house.grid_map,Gradients.pe_caesar,1.0)
+
+dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
+
+def solid_rainbow_hue_pulse(iterator,levels):
+    idle_increment = 2.0
+    brightness = 1.0
+    pulse_intensity = 5.0
+    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iter[0],levels,idle_increment,brightness,pulse_intensity))
+    return iterator
+
+dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
+
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
     return iterator
@@ -165,6 +220,7 @@ def solid_rainbow_clock(iterator,completion):
 rainbow_clock_map = {(off, -2*60*60, False),
                      (solid_rainbow_clock, 0, True),
                      (vert_rainbow, 1*60*60, False)}
+
 dm_rainbow_clock = AlarmClockDisplayMode('Rainbow Clock', rainbow_clock_map)
 
 mode_list = [dm_off,
@@ -182,6 +238,7 @@ striptest_dm_list = DisplayModeList("Striptests",
 
 standard_dm_list = DisplayModeList("Standard patterns",
                    [dm_off,
+                    dm_solid_color,
                     dm_solid_rainbow,
                     dm_rainbow])
 
@@ -190,10 +247,14 @@ grid_map_dm_list = DisplayModeList("Grid-map patterns",
                     dm_horizont_rainbow,
                     dm_diag_rainbow])
 
+audio_dm_list = DisplayModeList("Audio-Based Patterns",
+                [dm_solid_rainbow_hue_pulse])
+
 palette_dm_list = DisplayModeList("Palette patterns",
                   [dm_vert_palette])
 
 dm_list_dir = [striptest_dm_list,
                standard_dm_list,
                grid_map_dm_list,
+               audio_dm_list,
                palette_dm_list]
