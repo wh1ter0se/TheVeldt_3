@@ -158,7 +158,9 @@ def solid_rainbow_hue_pulse(grid_map,iter,levels,idle_increment,brightness,pulse
 		levels[0] = 0
 	bass = float(levels[0] / 255.0)
 	bass_push = pulse_intensity * bass
+	print("Bass push: " + str(bass_push))
 	iter += bass_push
+	iter %= bass_push
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
