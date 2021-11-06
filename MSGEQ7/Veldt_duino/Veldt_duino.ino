@@ -37,7 +37,8 @@ void loop() {
 
   // Serial raw debug output
   if (newReading)
-    serialBars(FPS);
+    //serialBars(FPS);
+    print_to_pi();
 }
 
 void serialBars(uint16_t FPS) {
@@ -60,12 +61,12 @@ void serialBars(uint16_t FPS) {
   Serial.print(delta);
   Serial.print(F(" D\t"));
 
-  // 1st channel (here: left)
-  Serial.print(MSGEQ7.get(MSGEQ7_BASS, 0));
+  // 1st channel (here: right)
+  Serial.print(MSGEQ7.get(MSGEQ7_5, 0));
   Serial.print(F(" R\t"));
 
   // 2nd channel (here: left)
-  Serial.print(MSGEQ7.get(MSGEQ7_BASS, 1));
+  Serial.print(MSGEQ7.get(MSGEQ7_BASS, 0));
   Serial.print(F(" L\t"));
 
   // overall volume of all channels
@@ -94,6 +95,17 @@ void serialBars(uint16_t FPS) {
       Serial.print(c);
   }
   Serial.println();
+}
+
+void print_to_pi() {
+  int input[7];
+  String output = "";
+  for (int i=0;i<7;i++) {
+    input[i] = MSGEQ7.get(i);
+    input[i] = mapNoise(input[i]);
+    output += String(input[i]) + " ";
+  }
+  Serial.println(output);
 }
 
 uint16_t getFPS(bool newReading) {
