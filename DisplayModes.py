@@ -216,7 +216,7 @@ def solid_rainbow_hue_pulse(iterator,levels,vars=None):
     idle_increment = 2.0
     brightness = 1.0
     pulse_intensity = 5.0
-    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iter[0],levels,idle_increment,brightness,pulse_intensity))
+    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iterator[0],levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
