@@ -1,12 +1,18 @@
-import serial, time, datetime, sys
+import time, datetime, sys
+from serial import Serial
 #import matplotlib.pyplot as plt
 #from veldt_manager import unix_millis
-ser = serial.Serial('/dev/ttyUSB0',115200,timeout=1)
-ser.flush()
+#ser = Serial('/dev/ttyUSB0',115200,timeout=1)
+#ser.flush()
+ser = None
+
+def serial_init():
+	ser = Serial('/dev/ttyUSB0',115200,timeout=1)
+	ser.flush()
 
 def unix_millis(dt):
-        epoch = datetime.datetime.utcfromtimestamp(0)
-        return (dt-epoch).total_seconds() * 1000.0
+	epoch = datetime.datetime.utcfromtimestamp(0)
+	return (dt-epoch).total_seconds() * 1000.0
 
 def read_levels():
 	levels = [-1,-1,-1,-1,-1,-1,-1]
@@ -101,8 +107,9 @@ def plotLevels(levels):
 		print(line)
 
 
-levels = sample_levels(2000)
+
 if len(sys.argv) > 1:
+	levels = sample_levels(2000)
 	while 42:
 		#levels = decay(levels,sampleLevels(150),0.75)	
 		levels = read_levels()

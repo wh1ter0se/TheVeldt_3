@@ -3,7 +3,7 @@ from numpy.core.arrayprint import DatetimeFormat
 from numpy.core.numeric import full
 import CommonPatterns as cp
 import AudioFuncs as af
-import datetime
+import datetime, time
 import Gradients
 from RoomConstants import *
 
@@ -32,14 +32,18 @@ class DisplayMode():
         if self.init_func is not None and self.is_init:
             self.init_func(self)
             self.is_init = False
+            #print("init_func")
         if self.uses_MSGEQ7:
-            levels = af.read_levels()
+            if af.ser is not None:
+                levels = af.read_levels()
+            else:
+                af.serial_init()
             if levels is not None:
                 self.stale_levels = self.levels
                 self.levels = levels
-            self.iterator = self.func(self.iterator,self.levels)
+            self.iterator = self.func(iterator=self.iterator,levels=self.levels,vars=self.vars)
         else:
-            self.iterator = self.func(self.iterator)
+            self.iterator = self.func(iterator=self.iterator,vars=self.vars)
         print('running')
 
 class DisplayModeList():
@@ -115,20 +119,23 @@ class AlarmClockDisplayMode(DisplayMode):
             else:
                 func(self.iterator)
 
-def off(iterator=None):
+def off(iterator=None,vars=None):
     cp.solid_color(curr_house.allstrips,0,0,0)
     return iterator
 
 dm_off = DisplayMode('Off', off)
 
-def white_striptest(iterator):
+def white_striptest(iterator,vars=None):
     cp.solid_color(House.allstrips,0,0,1)
     return iterator
 
 dm_white_striptest = DisplayMode('White Sriptest', white_striptest)
 
-def solid_color(iterator=None):
-    iterator[0] = cp.ftick(cp.solid_color())
+# vars[0] = hue
+def solid_color(vars,iterator=None):
+    saturation = 1.0
+    brightness = 1.0
+    cp.solid_color(curr_house.allstrips,vars[0],saturation,brightness)
 
 def solid_color_init(dm):
     print(" 0      60      120    180    240    300")
@@ -136,15 +143,15 @@ def solid_color_init(dm):
     hue = int(input("Hue (0-360)"))
     dm.vars = [hue]
 
-dm_solid_color = DisplayMode("Solidd Color", solid_color, init_func=solid_color_init)
+dm_solid_color = DisplayMode("Solid Color", solid_color, init_func=solid_color_init)
 
-def solid_rainbow(iterator):
+def solid_rainbow(iterator,vars=None):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
     return iterator
 
 dm_solid_rainbow = DisplayMode('Solid Rainbow', solid_rainbow)
 
-def rainbow(iterator):
+def rainbow(iterator,vars=None):
     increment = 3.0
     brightness = 1.0
     skew = 2.5
@@ -155,7 +162,7 @@ def rainbow(iterator):
 
 dm_rainbow = DisplayMode('Rainbow', rainbow)
 
-def rainbow_striptest(iterator):
+def rainbow_striptest(iterator,vars=None):
     increment = 3.0
     brightness = 1.0
     skew = 5.0
@@ -166,7 +173,7 @@ def rainbow_striptest(iterator):
 
 dm_rainbow_striptest = DisplayMode('Rainbow Striptest', rainbow_striptest)
 
-def vert_rainbow(iterator):
+def vert_rainbow(iterator,vars=None):
     increment = -3.0
     brightness = 1.0
     skew = 7.5
@@ -177,7 +184,7 @@ def vert_rainbow(iterator):
 
 dm_vert_rainbow = DisplayMode('Vertical Rainbow', vert_rainbow)
 
-def horizont_rainbow(iterator):
+def horizont_rainbow(iterator,vars=None):
     increment = -4.0
     brightness = 1.5
     skew = 5.0
@@ -188,7 +195,7 @@ def horizont_rainbow(iterator):
 
 dm_horizont_rainbow = DisplayMode("Horizontal Rainbow", horizont_rainbow)
 
-def diag_rainbow(iterator):
+def diag_rainbow(iterator,vars=None):
     increment = -3.0
     brightness = 1.0
     skew = 7.5
@@ -199,12 +206,12 @@ def diag_rainbow(iterator):
 
 dm_diag_rainbow = DisplayMode("Diagonal Rainbow", diag_rainbow)
 
-def vert_pallete(iterator):
+def vert_pallete(iterator,vars=None):
     iterator[0] = cp.vert_palette(curr_house.grid_map,Gradients.pe_caesar,1.0)
 
 dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
-def solid_rainbow_hue_pulse(iterator,levels):
+def solid_rainbow_hue_pulse(iterator,levels,vars=None):
     idle_increment = 2.0
     brightness = 1.0
     pulse_intensity = 5.0
