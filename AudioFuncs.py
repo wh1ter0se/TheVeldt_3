@@ -109,6 +109,7 @@ def plotLevels(levels):
 
 
 if len(sys.argv) > 1:
+	serial_init()
 	levels = sample_levels(2000)
 	while 42:
 		#levels = decay(levels,sampleLevels(150),0.75)	

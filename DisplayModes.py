@@ -139,7 +139,8 @@ def solid_color(vars,iterator=None):
 
 def solid_color_init(dm):
     print(" 0      60      120    180    240    300")
-    print("Red   Yellow   Green   Cyan   Blue  Violet")
+    print("Red   Violet    Blue   Cyan   Green   Yellow")
+    # print("Red   Yellow   Green   Cyan   Blue  Violet")
     hue = int(input("Hue (0-360)"))
     dm.vars = [hue]
 
