@@ -34,13 +34,10 @@ class DisplayMode():
             self.is_init = False
             #print("init_func")
         if self.uses_MSGEQ7:
-            if af.ser is not None:
-                levels = af.read_levels()
-                if levels is not None:
-                    self.stale_levels = self.levels
-                    self.levels = levels
-            else:
-                af.serial_init()
+            levels = af.read_levels()
+            if levels is not None:
+                self.stale_levels = self.levels
+                self.levels = levels
             self.iterator = self.func(iterator=self.iterator,levels=self.levels,vars=self.vars)
         else:
             self.iterator = self.func(iterator=self.iterator,vars=self.vars)

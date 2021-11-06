@@ -7,6 +7,7 @@ from serial import Serial
 ser = None
 
 def serial_init():
+	print("init serial")
 	ser = Serial('/dev/ttyUSB0',115200,timeout=1)
 	ser.flush()
 
@@ -15,6 +16,8 @@ def unix_millis(dt):
 	return (dt-epoch).total_seconds() * 1000.0
 
 def read_levels():
+	while ser == None:
+		serial_init()
 	levels = [-1,-1,-1,-1,-1,-1,-1]
 	#while(ser.in_waiting<1):
 	#	pass
