@@ -138,8 +138,8 @@ def solid_color(vars,iterator=None):
     cp.solid_color(curr_house.allstrips,vars[0],saturation,brightness)
 
 def solid_color_init(dm):
-    print(" 0      60      120    180    240    300")
-    print("Red   Violet    Blue   Cyan   Green   Yellow")
+    print(" 0      60     120    180     240    300")
+    print("Red   Violet   Blue   Cyan   Green  Yellow")
     # print("Red   Yellow   Green   Cyan   Blue  Violet")
     hue = int(input("Hue (0-360)"))
     dm.vars = [hue]
