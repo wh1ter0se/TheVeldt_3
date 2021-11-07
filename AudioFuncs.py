@@ -27,7 +27,10 @@ def read_levels(serial_obj):
 		#for i in range(7):
 		#	levels[i] = int(line[indx:line.find(' ',indx)])
 		#	indx = line.find(' ',indx)+3
-		levels = [int(n) for n in line.split()]
+		try:
+			levels = [int(n) for n in line.split()]
+		except ValueError:
+			pass
 		if isValid(levels):
 			return levels
 		# else:
