@@ -43,12 +43,12 @@ def isValid(levels):
 			return False
 	return True
 
-def sample_levels(windowms):
+def sample_levels(serial_obj,windowms):
 	start = unix_millis(datetime.datetime.now())
 	sums = [0,0,0,0,0,0,0]
 	valid = 0
 	while unix_millis(datetime.datetime.now()) < start + windowms:
-		line = read_levels()
+		line = read_levels(serial_obj)
 		if isValid(line):
 			for i in range(7):
 				sums[i] = sums[i] + int(line[i])
