@@ -224,6 +224,16 @@ def solid_rainbow_hue_pulse(iterator,levels,vars=None):
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
 
+def solid_rainbow_saturation_pulse(iterator,levels,vars=None):
+    increment = 1.0
+    brightness = 1.0
+    saturation = 1.0
+    min_saturation = .5
+    pulse_intensity = .01
+    iterator[0] = cp.ftick(cp.solid_rainbow_saturation_pulse(curr_house.grid_map,iterator[0],levels,increment,brightness,saturation,min_saturation,pulse_intensity))
+
+dm_solid_rainbow_saturation_pulse = DisplayMode('Solid Rainbow Saturation Pulse',solid_rainbow_saturation_pulse,uses_MSGEQ7=True)
+
 def solid_rainbow_brightness_pulse(iterator,levels,vars=None):
     increment = 3.0
     min_brightness = .5
@@ -270,6 +280,7 @@ grid_map_dm_list = DisplayModeList("Grid-map patterns",
 
 audio_dm_list = DisplayModeList("Audio-Based Patterns",
                 [dm_solid_rainbow_hue_pulse,
+                 dm_solid_rainbow_saturation_pulse,
                  dm_solid_rainbow_brightness_pulse])
 
 palette_dm_list = DisplayModeList("Palette patterns",
