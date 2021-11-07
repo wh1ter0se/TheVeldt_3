@@ -216,9 +216,9 @@ dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
 # vars[0] = Serial object
 def solid_rainbow_hue_pulse(iterator,levels,vars=None):
-    idle_increment = 2.0
+    idle_increment = 1.0
     brightness = 1.0
-    pulse_intensity = 5.0
+    pulse_intensity = .1
     iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iterator[0],levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
