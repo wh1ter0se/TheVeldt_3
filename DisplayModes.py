@@ -231,6 +231,7 @@ def solid_rainbow_saturation_pulse(iterator,levels,vars=None):
     min_saturation = .5
     pulse_intensity = .01
     iterator[0] = cp.ftick(cp.solid_rainbow_saturation_pulse(curr_house.grid_map,iterator[0],levels,increment,brightness,saturation,min_saturation,pulse_intensity))
+    return iterator
 
 dm_solid_rainbow_saturation_pulse = DisplayMode('Solid Rainbow Saturation Pulse',solid_rainbow_saturation_pulse,uses_MSGEQ7=True)
 
