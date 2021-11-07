@@ -39,6 +39,7 @@ class DisplayMode():
                 print(self.vars)
         if self.uses_MSGEQ7:
             levels = af.read_levels(self.vars[0])
+            print(levels)
             if levels is not None:
                 self.stale_levels = self.levels
                 self.levels = levels

@@ -24,10 +24,10 @@ def read_levels(serial_obj):
 		line = serial_obj.readline().decode('utf-8')+ ' ' # .decode('utf-8')
 		print(line)
 		indx = 0
+		for i in range(7):
+			levels[i] = int(line[indx:line.find(' ',indx)])
+			indx = line.find(' ',indx)+3
 		if isValid(levels):
-			for i in range(7):
-				levels[i] = int(line[indx:line.find(' ',indx)])
-				indx = line.find(' ',indx)+3
 			return levels
 		# else:
 		# 	return levels
@@ -113,7 +113,7 @@ def plotLevels(levels):
 if len(sys.argv) > 1:
 	ser = Serial('/dev/ttyUSB0',115200,timeout=1)
 	ser.flush()
-	levels = sample_levels(ser,2000)
+	#levels = sample_levels(ser,2000)
 	while 42:
 		#levels = decay(levels,sampleLevels(150),0.75)	
 		levels = read_levels(ser)
