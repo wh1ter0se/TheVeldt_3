@@ -156,9 +156,9 @@ def solid_rainbow_hue_pulse(grid_map,iter,levels,idle_increment,brightness,pulse
 	if levels[0] == -1:
 		print("MISSING AUDIO DATA")
 		levels[0] = 0
-	bass = float(levels[0] / 255.0)
+	bass = float(levels[0]) / 255.0
 	bass_push = pulse_intensity * bass
-	print("Bass push: " + str(bass_push))
+	print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	iter += bass_push
 	iter %= 360
 	for j in range(len(grid_map[0])):

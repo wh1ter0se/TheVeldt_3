@@ -29,10 +29,6 @@ class DisplayMode():
         self.stale_levels = self.levels
 
     def run(self):
-        print(self.init_func)
-        print(self.is_init)
-        cond1 = self.init_func is not None
-        cond2 = self.uses_MSGEQ7
         if self.is_init:
             if self.init_func is not None:
                 self.init_func(self)
