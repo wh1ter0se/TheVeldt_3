@@ -159,13 +159,13 @@ def solid_rainbow_hue_pulse(grid_map,iter,levels,idle_increment,brightness,pulse
 		levels[0] = 0
 	bass = levels[0]
 	bass_push = pulse_intensity * bass
-	print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
-	iter += bass_push
-	iter %= 360
+	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
+	#iter += bass_push
+	#iter %= 360
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
 			if grid_map[i][j] >= 0:
-				pixels[grid_map[i][j]] = hsvpos2rgb(iter,1.0,brightness,grid_map[i][j])
+				pixels[grid_map[i][j]] = hsvpos2rgb((iter+bass_push)%360,1.0,brightness,grid_map[i][j])
 	client.put_pixels(pixels)
 	return [iter,0,360,idle_increment]
 
@@ -177,7 +177,7 @@ def solid_rainbow_brightness_pulse(grid_map,iter,levels,increment,min_brightness
 		levels[0] = 0
 	bass = levels[0]
 	bass_push = pulse_intensity * bass
-	print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
+	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	brightness = max(min_brightness+bass_push,max_brightness)
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
@@ -194,7 +194,7 @@ def solid_rainbow_saturation_pulse(grid_map,iter,levels,increment,brightness,sat
 		levels[0] = 0
 	bass = levels[0]
 	bass_push = pulse_intensity * bass
-	print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
+	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	saturation = min(saturation-bass_push,min_saturation)
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
