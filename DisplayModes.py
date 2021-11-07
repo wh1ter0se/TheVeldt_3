@@ -39,7 +39,7 @@ class DisplayMode():
                 print(self.vars)
         if self.uses_MSGEQ7:
             levels = af.read_levels(self.vars[0])
-            print(levels)
+            #print(levels)
             if levels is not None:
                 self.stale_levels = self.levels
                 self.levels = levels
@@ -218,14 +218,14 @@ dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 def solid_rainbow_hue_pulse(iterator,levels,vars=None):
     idle_increment = 1.0
     brightness = 1.0
-    pulse_intensity = .5
+    pulse_intensity = .05
     iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iterator[0],levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
 
 def solid_rainbow_saturation_pulse(iterator,levels,vars=None):
-    increment = 1.0
+    increment = 3.0
     brightness = 1.0
     saturation = 1.0
     min_saturation = .5
