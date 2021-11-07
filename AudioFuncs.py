@@ -113,7 +113,7 @@ def plotLevels(levels):
 if len(sys.argv) > 1:
 	ser = Serial('/dev/ttyUSB0',115200,timeout=1)
 	ser.flush()
-	levels = sample_levels(2000)
+	levels = sample_levels(ser,2000)
 	while 42:
 		#levels = decay(levels,sampleLevels(150),0.75)	
 		levels = read_levels(ser)
