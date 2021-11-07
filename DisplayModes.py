@@ -29,12 +29,18 @@ class DisplayMode():
         self.stale_levels = self.levels
 
     def run(self):
-        if self.init_func is not None and self.is_init:
-            self.init_func(self)
+        print(self.init_func)
+        print(self.is_init)
+        cond1 = self.init_func is not None
+        cond2 = self.uses_MSGEQ7
+        if self.is_init:
+            if self.init_func is not None:
+                self.init_func(self)
             self.is_init = False
-            #print("init_func")
+            print("init_func")
             if self.uses_MSGEQ7:
-                self.vars[0] = af.get_serial()
+                self.vars = [af.get_serial()]
+                print(self.vars)
         if self.uses_MSGEQ7:
             levels = af.read_levels(self.vars[0])
             if levels is not None:
