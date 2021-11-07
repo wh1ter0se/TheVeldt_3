@@ -23,7 +23,7 @@ def read_levels(serial_obj):
 	if(serial_obj.in_waiting>0):
 		while(serial_obj.in_waiting>0): # get most recent line
 			line = serial_obj.readline().decode('utf-8')+ ' ' # .decode('utf-8')
-		print(line)
+		#print(line)
 		indx = 0
 		#for i in range(7):
 		#	levels[i] = int(line[indx:line.find(' ',indx)])
