@@ -46,7 +46,7 @@ class DisplayMode():
             self.iterator = self.func(iterator=self.iterator,levels=self.levels,vars=self.vars)
         else:
             self.iterator = self.func(iterator=self.iterator,vars=self.vars)
-        print('running')
+        #print('running')
 
 class DisplayModeList():
     def __init__(self,label,dms):
@@ -218,11 +218,20 @@ dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 def solid_rainbow_hue_pulse(iterator,levels,vars=None):
     idle_increment = 1.0
     brightness = 1.0
-    pulse_intensity = .1
+    pulse_intensity = .5
     iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iterator[0],levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
+
+def solid_rainbow_brightness_pulse(iterator,levels,vars=None):
+    increment = 3.0
+    min_brightness = .5
+    max_brightness = 1.0
+    pulse_intensity = .01
+    iterator[0] = cp.ftick(cp.solid_rainbow_brightness_pulse(curr_house.grid_map,iterator[0],levels,increment,min_brightness,max_brightness,pulse_intensity))
+
+dm_solid_rainbow_brightness_pulse = DisplayMode('Solid Rainbow Brightness Pulse',solid_rainbow_brightness_pulse,uses_MSGEQ7=True)
 
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
@@ -259,7 +268,8 @@ grid_map_dm_list = DisplayModeList("Grid-map patterns",
                     dm_diag_rainbow])
 
 audio_dm_list = DisplayModeList("Audio-Based Patterns",
-                [dm_solid_rainbow_hue_pulse])
+                [dm_solid_rainbow_hue_pulse,
+                 dm_solid_rainbow_brightness_pulse])
 
 palette_dm_list = DisplayModeList("Palette patterns",
                   [dm_vert_palette])
