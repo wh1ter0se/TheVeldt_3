@@ -153,7 +153,7 @@ def vert_palette(grid_map,palette,brightness):
 
 def solid_rainbow_hue_pulse(grid_map,iter,levels,idle_increment,brightness,pulse_intensity):
 	client = opc.Client(client_port)
-	print(levels)
+	#print(levels)
 	if levels[0] == -1:
 		print("MISSING AUDIO DATA")
 		levels[0] = 0

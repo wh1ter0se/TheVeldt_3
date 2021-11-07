@@ -24,9 +24,10 @@ def read_levels(serial_obj):
 		line = serial_obj.readline().decode('utf-8')+ ' ' # .decode('utf-8')
 		print(line)
 		indx = 0
-		for i in range(7):
-			levels[i] = int(line[indx:line.find(' ',indx)])
-			indx = line.find(' ',indx+3)
+		#for i in range(7):
+		#	levels[i] = int(line[indx:line.find(' ',indx)])
+		#	indx = line.find(' ',indx)+3
+		levels = [int(n) for n in line.split()]
 		if isValid(levels):
 			return levels
 		# else:
