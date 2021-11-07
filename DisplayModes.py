@@ -230,6 +230,7 @@ def solid_rainbow_brightness_pulse(iterator,levels,vars=None):
     max_brightness = 1.0
     pulse_intensity = .01
     iterator[0] = cp.ftick(cp.solid_rainbow_brightness_pulse(curr_house.grid_map,iterator[0],levels,increment,min_brightness,max_brightness,pulse_intensity))
+    return iterator
 
 dm_solid_rainbow_brightness_pulse = DisplayMode('Solid Rainbow Brightness Pulse',solid_rainbow_brightness_pulse,uses_MSGEQ7=True)
 
