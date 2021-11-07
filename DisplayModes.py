@@ -33,8 +33,10 @@ class DisplayMode():
             self.init_func(self)
             self.is_init = False
             #print("init_func")
+            if self.uses_MSGEQ7:
+                self.vars[0] = af.get_serial()
         if self.uses_MSGEQ7:
-            levels = af.read_levels()
+            levels = af.read_levels(self.vars[0])
             if levels is not None:
                 self.stale_levels = self.levels
                 self.levels = levels
@@ -209,6 +211,7 @@ def vert_pallete(iterator,vars=None):
 
 dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
+# vars[0] = Serial object
 def solid_rainbow_hue_pulse(iterator,levels,vars=None):
     idle_increment = 2.0
     brightness = 1.0

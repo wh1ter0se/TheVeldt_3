@@ -4,36 +4,33 @@ from serial import Serial
 #from veldt_manager import unix_millis
 #ser = Serial('/dev/ttyUSB0',115200,timeout=1)
 #ser.flush()
-ser = None
+#ser = None
 
-def serial_init():
+def get_serial():
 	print("init serial")
 	ser = Serial('/dev/ttyUSB0',115200,timeout=1)
 	ser.flush()
-	time.sleep(1)
+	return ser
 
 def unix_millis(dt):
 	epoch = datetime.datetime.utcfromtimestamp(0)
 	return (dt-epoch).total_seconds() * 1000.0
 
-def read_levels():
-	if ser == None:
-		print("No serial initialized")
-	else:
-		levels = [-1,-1,-1,-1,-1,-1,-1]
-		#while(ser.in_waiting<1):
-		#	pass
-		if(ser.in_waiting>0):
-			line = ser.readline()+ ' ' # .decode('utf-8')
-			print(line)
-			indx = 0
-			if isValid(levels):
-				for i in range(7):
-					levels[i] = int(line[indx:line.find(' ',indx)])
-					indx = line.find(' ',indx)+3
-				return levels
-			# else:
-			# 	return levels
+def read_levels(serial_obj):
+	levels = [-1,-1,-1,-1,-1,-1,-1]
+	#while(ser.in_waiting<1):
+	#	pass
+	if(serial_obj.in_waiting>0):
+		line = serial_obj.readline()+ ' ' # .decode('utf-8')
+		print(line)
+		indx = 0
+		if isValid(levels):
+			for i in range(7):
+				levels[i] = int(line[indx:line.find(' ',indx)])
+				indx = line.find(' ',indx)+3
+			return levels
+		# else:
+		# 	return levels
 
 def isValid(levels):
 	for i in range(7):
@@ -119,7 +116,7 @@ if len(sys.argv) > 1:
 	levels = sample_levels(2000)
 	while 42:
 		#levels = decay(levels,sampleLevels(150),0.75)	
-		levels = read_levels()
+		levels = read_levels(ser)
 		#print_levels(levels)
 		#plotLevels(levels)
 		#plotLevels(levels)
