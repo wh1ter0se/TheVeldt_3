@@ -21,7 +21,8 @@ def read_levels(serial_obj):
 	#while(ser.in_waiting<1):
 	#	pass
 	if(serial_obj.in_waiting>0):
-		line = serial_obj.readline().decode('utf-8')+ ' ' # .decode('utf-8')
+		while(ser.in_waiting>0): # get most recent line
+			line = serial_obj.readline().decode('utf-8')+ ' ' # .decode('utf-8')
 		print(line)
 		indx = 0
 		#for i in range(7):
