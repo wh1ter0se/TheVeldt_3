@@ -252,6 +252,7 @@ def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
     hueB = 0
     pulse_intensity = .02
     iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,pulse_intensity)
+    return iterator
 
 dm_two_color_pulse = DisplayMode('Two Color Pulse',two_color_pulse,uses_MSGEQ7=True)
 
