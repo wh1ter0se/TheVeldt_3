@@ -246,11 +246,11 @@ def solid_rainbow_brightness_pulse(iterator,levels,stale_levels=None,vars=None):
 dm_solid_rainbow_brightness_pulse = DisplayMode('Solid Rainbow Brightness Pulse',solid_rainbow_brightness_pulse,uses_MSGEQ7=True)
 
 def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
-    decay_rate = 20.0
+    decay_rate = 30.0
     brightness = 1.0
     hueA = 80.0
     hueB = 0.0
-    pulse_intensity = .005
+    pulse_intensity = .001
     iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,pulse_intensity)
     return iterator
 
