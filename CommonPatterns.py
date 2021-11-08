@@ -216,8 +216,7 @@ def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,p
 		levels[0] = 0
 	bass = float(levels[0])
 	bass = max(stale_bass-decay_rate,bass)
-	bass_push = pulse_intensity * bass
-	state = bass_push / 255.0
+	state = pulse_intensity * bass
 	hue = (state * hueB) + ((1-state) * hueA)
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	# for j in range(len(grid_map[0])):
