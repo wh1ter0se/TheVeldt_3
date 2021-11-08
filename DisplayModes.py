@@ -248,7 +248,7 @@ dm_solid_rainbow_brightness_pulse = DisplayMode('Solid Rainbow Brightness Pulse'
 def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
     decay_rate = 25.0
     brightness = 1.0
-    hueA = 180.0
+    hueA = 80.0
     hueB = 0.0
     similarity_theshold = .25
     pulse_intensity = .004
