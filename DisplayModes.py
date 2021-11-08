@@ -250,8 +250,9 @@ def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
     brightness = 1.0
     hueA = 80.0
     hueB = 0.0
+    similarity_theshold = .25
     pulse_intensity = .004
-    iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,pulse_intensity)
+    iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
     return iterator
 
 dm_two_color_pulse = DisplayMode('Two Color Pulse',two_color_pulse,uses_MSGEQ7=True)

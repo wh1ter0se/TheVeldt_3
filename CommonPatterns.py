@@ -209,7 +209,7 @@ def solid_rainbow_saturation_pulse(line_map,iter,levels,increment,brightness,sat
 	client.put_pixels(pixels)
 	return [iter,0,360,increment]
 
-def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,pulse_intensity):
+def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity):
 	client = opc.Client(client_port)
 	if levels[0] == -1:
 		print("MISSING AUDIO DATA")
@@ -217,7 +217,7 @@ def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,p
 	bass = float(levels[0])
 	bass = max(stale_bass-decay_rate,bass)
 	state = min(pulse_intensity * bass,1)
-	if state < .1:
+	if state < similarity_theshold:
 		state = 0
 	hue = (state * hueB) + ((1-state) * hueA)
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
