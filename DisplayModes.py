@@ -43,7 +43,7 @@ class DisplayMode():
             if levels is not None:
                 self.stale_levels = self.levels
                 self.levels = levels
-            self.iterator = self.func(iterator=self.iterator,levels=self.levels,vars=self.vars)
+            self.iterator = self.func(iterator=self.iterator,levels=self.levels,stale_levels=self.stale_levels,vars=self.vars)
         else:
             self.iterator = self.func(iterator=self.iterator,vars=self.vars)
         #print('running')
@@ -215,35 +215,45 @@ def vert_pallete(iterator,vars=None):
 dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
 # vars[0] = Serial object
-def solid_rainbow_hue_pulse(iterator,levels,vars=None):
+def solid_rainbow_hue_pulse(iterator,levels,stale_levels=None,vars=None):
     idle_increment = 1.0
     brightness = 1.0
     pulse_intensity = .05
-    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.grid_map,iterator[0],levels,idle_increment,brightness,pulse_intensity))
+    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.allstrips,iterator[0],levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
 
-def solid_rainbow_saturation_pulse(iterator,levels,vars=None):
+def solid_rainbow_saturation_pulse(iterator,levels,stale_levels=None,vars=None):
     increment = 3.0
     brightness = 1.0
     saturation = 1.0
     min_saturation = .5
     pulse_intensity = .01
-    iterator[0] = cp.ftick(cp.solid_rainbow_saturation_pulse(curr_house.grid_map,iterator[0],levels,increment,brightness,saturation,min_saturation,pulse_intensity))
+    iterator[0] = cp.ftick(cp.solid_rainbow_saturation_pulse(curr_house.allstrips,iterator[0],levels,increment,brightness,saturation,min_saturation,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_saturation_pulse = DisplayMode('Solid Rainbow Saturation Pulse',solid_rainbow_saturation_pulse,uses_MSGEQ7=True)
 
-def solid_rainbow_brightness_pulse(iterator,levels,vars=None):
+def solid_rainbow_brightness_pulse(iterator,levels,stale_levels=None,vars=None):
     increment = 3.0
     min_brightness = .5
     max_brightness = 1.0
     pulse_intensity = .01
-    iterator[0] = cp.ftick(cp.solid_rainbow_brightness_pulse(curr_house.grid_map,iterator[0],levels,increment,min_brightness,max_brightness,pulse_intensity))
+    iterator[0] = cp.ftick(cp.solid_rainbow_brightness_pulse(curr_house.allstrips,iterator[0],levels,increment,min_brightness,max_brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_brightness_pulse = DisplayMode('Solid Rainbow Brightness Pulse',solid_rainbow_brightness_pulse,uses_MSGEQ7=True)
+
+def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
+    decay_rate = 5.0
+    brightness = 1.0
+    hueA = 80
+    hueB = 0
+    pulse_intensity = .02
+    iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,pulse_intensity)
+
+dm_two_color_pulse = DisplayMode('Two Color Pulse',two_color_pulse,uses_MSGEQ7=True)
 
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
@@ -282,7 +292,8 @@ grid_map_dm_list = DisplayModeList("Grid-map patterns",
 audio_dm_list = DisplayModeList("Audio-Based Patterns",
                 [dm_solid_rainbow_hue_pulse,
                  dm_solid_rainbow_saturation_pulse,
-                 dm_solid_rainbow_brightness_pulse])
+                 dm_solid_rainbow_brightness_pulse,
+                 dm_two_color_pulse])
 
 palette_dm_list = DisplayModeList("Palette patterns",
                   [dm_vert_palette])
