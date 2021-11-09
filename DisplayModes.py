@@ -215,11 +215,11 @@ def vert_pallete(iterator,vars=None):
 dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
 # vars[0] = Serial object
-def solid_rainbow_hue_pulse(iterator,levels,stale_levels=None,vars=None):
-    idle_increment = 1.0
+def solid_rainbow_hue_pulse(iterator,levels,stale_levels,vars=None):
+    idle_increment = .25
     brightness = 1.0
-    pulse_intensity = .05
-    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.allstrips,iterator[0],levels,idle_increment,brightness,pulse_intensity))
+    pulse_intensity = .25
+    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.allstrips,iterator[0],levels,stale_levels,idle_increment,brightness,pulse_intensity))
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)

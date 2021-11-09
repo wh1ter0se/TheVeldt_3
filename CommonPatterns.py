@@ -151,23 +151,20 @@ def vert_palette(grid_map,palette,brightness):
 				pixels[grid_map[i][j]] = brightness * palpos2rgb(palette,j,grid_map[i][j])
 	client.put_pixels(pixels)
 
-def solid_rainbow_hue_pulse(line_map,iter,levels,idle_increment,brightness,pulse_intensity):
+def solid_rainbow_hue_pulse(line_map,iter,levels,stale_levels,idle_increment,brightness,pulse_intensity):
 	client = opc.Client(client_port)
 	#print(levels)
 	if levels[0] == -1:
 		print("MISSING AUDIO DATA")
 		levels[0] = 0
 	bass = levels[0]
-	bass_push = pulse_intensity * bass
+	stale_bass = stale_levels[0]
+	bass_push = pulse_intensity * max(bass-stale_bass,0)
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
-	#iter += bass_push
-	#iter %= 360
-	#for j in range(len(grid_map[0])):
-	#	for i in range(len(grid_map)):
-	#		if grid_map[i][j] >= 0:
-	#			pixels[grid_map[i][j]] = hsvpos2rgb((iter+bass_push)%360,1.0,brightness,grid_map[i][j])
+	iter += bass_push
+	iter %= 360
 	for x in line_map:
-		pixels[x] = hsvpos2rgb((iter+bass_push)%360,1.0,brightness,x)
+		pixels[x] = hsvpos2rgb((iter)%360,1.0,brightness,x)
 	client.put_pixels(pixels)
 	return [iter,0,360,idle_increment]
 
@@ -181,10 +178,6 @@ def solid_rainbow_brightness_pulse(line_map,iter,levels,increment,min_brightness
 	bass_push = pulse_intensity * bass
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	brightness = max(min_brightness+bass_push,max_brightness)
-	# for j in range(len(grid_map[0])):
-	# 	for i in range(len(grid_map)):
-	# 		if grid_map[i][j] >= 0:
-	# 			pixels[grid_map[i][j]] = hsvpos2rgb(iter,1.0,brightness,grid_map[i][j])
 	for x in line_map:
 		pixels[x] = hsvpos2rgb(iter,1.0,brightness,x)
 	client.put_pixels(pixels)
@@ -200,10 +193,6 @@ def solid_rainbow_saturation_pulse(line_map,iter,levels,increment,brightness,sat
 	bass_push = pulse_intensity * bass
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	saturation = min(saturation-bass_push,min_saturation)
-	# for j in range(len(grid_map[0])):
-	# 	for i in range(len(grid_map)):
-	# 		if grid_map[i][j] >= 0:
-	# 			pixels[grid_map[i][j]] = hsvpos2rgb(iter,saturation,brightness,grid_map[i][j])
 	for x in line_map:
 		pixels[x] = hsvpos2rgb(iter,saturation,brightness,x)
 	client.put_pixels(pixels)
@@ -220,11 +209,6 @@ def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,s
 	if state < similarity_theshold:
 		state = 0
 	hue = (state * hueB) + ((1-state) * hueA)
-	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
-	# for j in range(len(grid_map[0])):
-	# 	for i in range(len(grid_map)):
-	# 		if grid_map[i][j] >= 0:
-	# 			pixels[grid_map[i][j]] = hsvpos2rgb(iter,saturation,brightness,grid_map[i][j])
 	for x in line_map:
 		pixels[x] = hsvpos2rgb(hue,1.0,brightness,x)
 	client.put_pixels(pixels)
