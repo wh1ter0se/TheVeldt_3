@@ -1,9 +1,13 @@
 # Import the module
 from pyky040 import pyky040
+import I2C_LCD_driver
+
+mylcd = I2C_LCD_driver.lcd()
 
 # Define your callback
 def my_callback(scale_position):
-    print('Hello world! The scale position is {}'.format(scale_position))
+    #print('Hello world! The scale position is {}'.format(scale_position))
+    mylcd.lcd_display_string(str(scale_position), 1)
 
 # Init the encoder pins
 my_encoder = pyky040.Encoder(CLK=17, DT=18, SW=27)
