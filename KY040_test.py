@@ -1,5 +1,5 @@
 # Import the module
-import pyky040
+from pyky040 import pyky040
 
 # Define your callback
 def my_callback(scale_position):
