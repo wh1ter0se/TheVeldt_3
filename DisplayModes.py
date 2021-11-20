@@ -26,7 +26,7 @@ class DisplayMode():
         self.is_init = True
         self.uses_MSGEQ7 = uses_MSGEQ7
         self.levels = [-1,-1,-1,-1,-1,-1,-1]
-        self.stale_levels = self.levels
+        self.stale_levels = [self.levels,self.levels,self.levels]
 
     def run(self):
         if self.is_init:
@@ -41,7 +41,7 @@ class DisplayMode():
             levels = af.read_levels(self.vars[0])
             #print(levels)
             if levels is not None:
-                self.stale_levels = self.levels
+                self.stale_levels = [self.levels,self.stale_levels[0],self.stale_levels[1]]
                 self.levels = levels
             self.iterator = self.func(iterator=self.iterator,levels=self.levels,stale_levels=self.stale_levels,vars=self.vars)
         else:
@@ -256,6 +256,18 @@ def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
     return iterator
 
 dm_two_color_pulse = DisplayMode('Two Color Pulse',two_color_pulse,uses_MSGEQ7=True)
+
+def two_color_pulse_striptest(levels,iterator,stale_levels=None,vars=None):
+    decay_rate = 25.0
+    brightness = 1.0
+    hueA = 60.0
+    hueB = 0.0
+    similarity_theshold = .1
+    pulse_intensity = .004
+    iterator[0] = cp.two_color_pulse(House.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
+    return iterator
+
+dm_two_color_pulse_striptest = DisplayMode('Two Color Pulse Striptest',two_color_pulse_striptest,uses_MSGEQ7=True)
 
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))

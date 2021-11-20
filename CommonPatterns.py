@@ -158,7 +158,7 @@ def solid_rainbow_hue_pulse(line_map,iter,levels,stale_levels,idle_increment,bri
 		print("MISSING AUDIO DATA")
 		levels[0] = 0
 	bass = levels[0]
-	stale_bass = stale_levels[0]
+	stale_bass = stale_levels[0,0]
 	bass_push = pulse_intensity * (bass-stale_bass)
 	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
 	iter += bass_push
