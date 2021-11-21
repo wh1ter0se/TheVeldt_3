@@ -23,6 +23,7 @@ opt_list = ['A','B','C','D','E','F','G']
 # curr_index = 0
 
 def update_list(curr_index):
+    curr_index /= 2
     down_diff = max(curr_index - 4,0)
     mylcd.lcd_clear()
     for i in range(4):
@@ -41,8 +42,8 @@ my_encoder = pyky040.Encoder(CLK=17, DT=18, SW=27)
 
 # Setup the options and callbacks (see documentation)
 # my_encoder.setup(scale_min=0, scale_max=100, step=1, chg_callback=my_callback)
-my_encoder.setup(scale_min=0, scale_max=200, step=1, chg_callback=single_tick_test)
-# my_encoder.setup(scale_min=0, scale_max=len(opt_list), step=1, chg_callback=update_list)
+# my_encoder.setup(scale_min=0, scale_max=200, step=1, chg_callback=single_tick_test)
+my_encoder.setup(scale_min=0, scale_max=2*len(opt_list), step=1, chg_callback=update_list)
 
 # Launch the listener
 my_encoder.watch()
