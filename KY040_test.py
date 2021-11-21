@@ -13,7 +13,11 @@ def my_callback(scale_position):
     #     final_str += " "
     # mylcd.lcd_display_string(final_str, 1)
     mylcd.lcd_clear()
-    mylcd.lcd_display_string(str(scale_position), 1)
+    mylcd.lcd_display_string(str(int(scale_position)), 1)
+
+def single_tick_test(position):
+    mylcd.lcd_clear()
+    mylcd.lcd_display_string(str(position/2), 1)
 
 opt_list = ['A','B','C','D','E','F','G']
 # curr_index = 0
@@ -37,7 +41,8 @@ my_encoder = pyky040.Encoder(CLK=17, DT=18, SW=27)
 
 # Setup the options and callbacks (see documentation)
 # my_encoder.setup(scale_min=0, scale_max=100, step=1, chg_callback=my_callback)
-my_encoder.setup(scale_min=0, scale_max=len(opt_list), step=1, chg_callback=update_list)
+my_encoder.setup(scale_min=0, scale_max=200, step=1, chg_callback=single_tick_test)
+# my_encoder.setup(scale_min=0, scale_max=len(opt_list), step=1, chg_callback=update_list)
 
 # Launch the listener
 my_encoder.watch()
