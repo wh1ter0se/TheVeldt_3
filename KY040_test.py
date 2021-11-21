@@ -15,18 +15,17 @@ def my_callback(scale_position):
     mylcd.lcd_clear()
     mylcd.lcd_display_string(str(scale_position), 1)
 
-opt_list = ['A','B','C','D','E','F']
+opt_list = ['A','B','C','D','E','F','G']
 # curr_index = 0
 
-def update_list(position):
-    curr_index = int(position)
+def update_list(curr_index):
     down_diff = max(curr_index - 4,0)
     mylcd.lcd_clear()
     for i in range(4):
         if curr_index == (down_diff + i):
-            prefix = "  "
-        else:
             prefix = "> "
+        else:
+            prefix = "  "
         curr_line = prefix + opt_list[down_diff+i]
         mylcd.lcd_display_string(curr_line, i+1)
 
@@ -38,7 +37,7 @@ my_encoder = pyky040.Encoder(CLK=17, DT=18, SW=27)
 
 # Setup the options and callbacks (see documentation)
 # my_encoder.setup(scale_min=0, scale_max=100, step=1, chg_callback=my_callback)
-my_encoder.setup(scale_min=0, scale_max=len(opt_list), step=.5, chg_callback=update_list)
+my_encoder.setup(scale_min=0, scale_max=len(opt_list), step=1, chg_callback=update_list)
 
 # Launch the listener
 my_encoder.watch()
