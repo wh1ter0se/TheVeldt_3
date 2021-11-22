@@ -162,7 +162,7 @@ class State(House):
 
 		self.grnd = self.desk
 
-		self.allstrips = self.splash + self.grnd + self.desk + +self.tree self.halo
+		self.allstrips = self.splash + self.grnd + self.desk + self.tree + self.halo
 
 		super().__init__(self.init_grid_map)
 
