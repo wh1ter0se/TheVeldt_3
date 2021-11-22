@@ -126,6 +126,8 @@ class State(House):
 	
 	desk = list(range(64*2,64*2+37+23))
 
+	tree = list(range(64*6,64*6+30))
+
 	halo = list(range(64*7,64*7 + 44))
 
 	grid_map = np.array([[-1 for y in range(32)] for x in range(128)],dtype=object)
@@ -160,7 +162,7 @@ class State(House):
 
 		self.grnd = self.desk
 
-		self.allstrips = self.splash + self.grnd + self.desk + self.halo
+		self.allstrips = self.splash + self.grnd + self.desk + +self.tree self.halo
 
 		super().__init__(self.init_grid_map)
 
