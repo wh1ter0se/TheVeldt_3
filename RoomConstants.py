@@ -115,7 +115,7 @@ class State(House):
 			   [0,1,2],
 			   [2,0,1],
 			   [2,0,1],
-			   [0,1,2],
+			   [2,0,1],
 			   [0,1,2]]
 
 	splashA = list(range(0,29))
@@ -126,9 +126,9 @@ class State(House):
 	
 	desk = list(range(64*2,64*2+37+23))
 
-	tree = list(range(64*6,64*6+30))
+	tree = list(range(64*6,64*6+60))
 
-	halo = list(range(64*7,64*7 + 44))
+	halo = list(range(64*7,64*7+44))
 
 	grid_map = np.array([[-1 for y in range(32)] for x in range(128)],dtype=object)
 	
