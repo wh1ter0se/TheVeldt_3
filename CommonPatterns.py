@@ -98,6 +98,25 @@ def solid_color(line_map,hue,saturation,brightness):
 		pixels[x] = hsvpos2rgb(hue,saturation,brightness,x)
 	client.put_pixels(pixels)
 
+def piecewise_colors(line_map,brightness,color_HSVs):
+	client = opc.Client(client_port)
+	for x in line_map:
+		HSV = color_HSVs[x % len(color_HSVs)]
+		pixels[x] = hsvpos2rgb(HSV[0],HSV[1],brightness,x)
+	client.put_pixels(pixels)
+
+def moving_piecewise_colors(line_map,iters,brightness,color_HSVs,ticks):
+	client = opc.Client(client_port)
+	for x in line_map:
+		HSV = color_HSVs[iters[1] + (x % len(color_HSVs))]
+		pixels[x] = hsvpos2rgb(HSV[0],HSV[1],brightness,x)
+	client.put_pixels(pixels)
+	if iters[0] == 0:
+		advance = 1
+	else:
+		advance = 0
+	return [[iters[0],0,ticks,1], [iters[1],0,len(color_HSVs),advance]]
+
 def rainbow(line_map,iter,increment,brightness,skew,sinK):
 	client = opc.Client(client_port)
 	indx = line_map

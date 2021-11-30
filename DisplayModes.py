@@ -4,6 +4,7 @@ from numpy.core.numeric import full
 import CommonPatterns as cp
 import AudioFuncs as af
 import datetime, time
+import Colors
 import Gradients
 from RoomConstants import *
 
@@ -148,6 +149,13 @@ def solid_color_init(dm):
 
 dm_solid_color = DisplayMode("Solid Color", solid_color, init_func=solid_color_init)
 
+def piecewise_holiday_colors(vars=None,iterator=None):
+    brightness = 1.0
+    color_HSVs = Colors.holiday_colors
+    cp.piecewise_colors(curr_house.allstrips,brightness,color_HSVs)
+
+dm_piecewise_holiday_colors = DisplayMode("Holiday Colors", piecewise_holiday_colors)
+
 def solid_rainbow(iterator,vars=None):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,1.0))
     return iterator
@@ -257,6 +265,18 @@ def two_color_pulse(levels,iterator,stale_levels=None,vars=None):
 
 dm_two_color_pulse = DisplayMode('Two Color Pulse',two_color_pulse,uses_MSGEQ7=True)
 
+def christmas_two_color_pulse(levels,iterator,stale_levels=None,vars=None):
+    decay_rate = 25.0
+    brightness = 1.0
+    hueA = 359.0
+    hueB = 240.0
+    similarity_theshold = .25
+    pulse_intensity = .004
+    iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
+    return iterator
+
+dm_christmas_two_color_pulse = DisplayMode('Christmas Two Color Pulse',christmas_two_color_pulse,uses_MSGEQ7=True)
+
 def two_color_pulse_striptest(levels,iterator,stale_levels=None,vars=None):
     decay_rate = 25.0
     brightness = 1.0
@@ -292,13 +312,16 @@ striptest_dm_list = DisplayModeList("Striptests",
                      dm_white_striptest,
                      dm_rainbow_striptest])
 
-standard_dm_list = DisplayModeList("Standard patterns",
+standard_dm_list = DisplayModeList("Standard Patterns",
                    [dm_off,
                     dm_solid_color,
                     dm_solid_rainbow,
                     dm_rainbow])
 
-grid_map_dm_list = DisplayModeList("Grid-map patterns",
+piecewise_dm_list = DisplayModeList("Piecewise Patterns",
+                    [dm_piecewise_holiday_colors])
+
+grid_map_dm_list = DisplayModeList("Grid-map Patterns",
                    [dm_vert_rainbow,
                     dm_horizont_rainbow,
                     dm_diag_rainbow])
@@ -307,13 +330,15 @@ audio_dm_list = DisplayModeList("Audio-Based Patterns",
                 [dm_solid_rainbow_hue_pulse,
                  dm_solid_rainbow_saturation_pulse,
                  dm_solid_rainbow_brightness_pulse,
-                 dm_two_color_pulse])
+                 dm_two_color_pulse,
+                 dm_christmas_two_color_pulse])
 
-palette_dm_list = DisplayModeList("Palette patterns",
+palette_dm_list = DisplayModeList("Palette Patterns",
                   [dm_vert_palette])
 
 dm_list_dir = [striptest_dm_list,
                standard_dm_list,
+               piecewise_dm_list,
                grid_map_dm_list,
                audio_dm_list,
                palette_dm_list]
