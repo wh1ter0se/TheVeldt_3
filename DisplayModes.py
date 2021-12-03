@@ -270,7 +270,7 @@ def christmas_two_color_pulse(levels,iterator,stale_levels=None,vars=None):
     brightness = 1.0
     hueA = 359.0
     hueB = 240.0
-    similarity_theshold = .25
+    similarity_theshold = .15
     pulse_intensity = .004
     iterator[0] = cp.two_color_pulse(curr_house.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
     return iterator
