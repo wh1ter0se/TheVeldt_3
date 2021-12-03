@@ -301,7 +301,7 @@ def solid_rainbow_pulse(levels,iterator,stale_levels=None,vars=None):
     iterator[1] = iters[1]
     return iterator
 
-dm_solid_rainbow_pulse = DisplayMode("Solid Rainbow (TC) Pulse",solid_rainbow_pulse)
+dm_solid_rainbow_pulse = DisplayMode("Solid Rainbow (TC) Pulse",solid_rainbow_pulse,uses_MSGEQ7=True)
 
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
