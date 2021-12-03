@@ -222,12 +222,16 @@ def vert_pallete(iterator,vars=None):
 
 dm_vert_palette = DisplayMode("Vertical Palette", vert_pallete)
 
-# vars[0] = Serial object
-def solid_rainbow_hue_pulse(iterator,levels,stale_levels,vars=None):
-    idle_increment = .25
+def solid_rainbow_hue_pulse(levels,iterator,stale_levels=None,vars=None):
+    decay_rate = 25.0
     brightness = 1.0
-    pulse_intensity = .25
-    iterator[0] = cp.ftick(cp.solid_rainbow_hue_pulse(curr_house.allstrips,iterator[0],levels,stale_levels,idle_increment,brightness,pulse_intensity))
+    hue_diff = 90.0
+    rainbow_idle = .5
+    similarity_theshold = .2
+    pulse_intensity = .004
+    iters = cp.solid_rainbow_pulse(curr_house.allstrips,iterator[0],levels,iterator[1],decay_rate,brightness,hue_diff,rainbow_idle,similarity_theshold,pulse_intensity)
+    iterator[0] = cp.ftick(iters[0])
+    iterator[1] = iters[1]
     return iterator
 
 dm_solid_rainbow_hue_pulse = DisplayMode('Solid Rainbow Hue Pulse',solid_rainbow_hue_pulse,uses_MSGEQ7=True)
@@ -289,20 +293,6 @@ def two_color_pulse_striptest(levels,iterator,stale_levels=None,vars=None):
 
 dm_two_color_pulse_striptest = DisplayMode('Two Color Pulse Striptest',two_color_pulse_striptest,uses_MSGEQ7=True)
 
-def solid_rainbow_pulse(levels,iterator,stale_levels=None,vars=None):
-    decay_rate = 25.0
-    brightness = 1.0
-    hue_diff = 60.0
-    rainbow_idle = .5
-    similarity_theshold = .15
-    pulse_intensity = .004
-    iters = cp.solid_rainbow_pulse(curr_house.allstrips,iterator[0],levels,iterator[1],decay_rate,brightness,hue_diff,rainbow_idle,similarity_theshold,pulse_intensity)
-    iterator[0] = cp.ftick(iters[0])
-    iterator[1] = iters[1]
-    return iterator
-
-dm_solid_rainbow_pulse = DisplayMode("Solid Rainbow (TC) Pulse",solid_rainbow_pulse,uses_MSGEQ7=True)
-
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
     return iterator
@@ -345,8 +335,7 @@ audio_dm_list = DisplayModeList("Audio-Based Patterns",
                  dm_solid_rainbow_saturation_pulse,
                  dm_solid_rainbow_brightness_pulse,
                  dm_two_color_pulse,
-                 dm_christmas_two_color_pulse,
-                 dm_solid_rainbow_pulse])
+                 dm_christmas_two_color_pulse])
 
 palette_dm_list = DisplayModeList("Palette Patterns",
                   [dm_vert_palette])

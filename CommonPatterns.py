@@ -170,22 +170,22 @@ def vert_palette(grid_map,palette,brightness):
 				pixels[grid_map[i][j]] = brightness * palpos2rgb(palette,j,grid_map[i][j])
 	client.put_pixels(pixels)
 
-def solid_rainbow_hue_pulse(line_map,iter,levels,stale_levels,idle_increment,brightness,pulse_intensity):
+def solid_rainbow_hue_pulse(line_map,iter,levels,stale_bass,decay_rate,brightness,hue_diff,rainbow_idle,similarity_theshold,pulse_intensity):
 	client = opc.Client(client_port)
-	#print(levels)
 	if levels[0] == -1:
 		print("MISSING AUDIO DATA")
 		levels[0] = 0
-	bass = levels[0]
-	stale_bass = stale_levels[0,0]
-	bass_push = pulse_intensity * (bass-stale_bass)
-	#print("Bass push: " + str(bass_push) + ', Bass: ' + str(bass))
-	iter += bass_push
-	iter %= 360
+	bass = float(levels[0])
+	bass = max(stale_bass-decay_rate,bass)
+	state = min(pulse_intensity * bass,1)
+	if state < similarity_theshold:
+		state = 0		
+	hue = state * hue_diff
+	hue = (hue+iter) % 360
 	for x in line_map:
-		pixels[x] = hsvpos2rgb((iter)%360,1.0,brightness,x)
+		pixels[x] = hsvpos2rgb(hue,1.0,brightness,x)
 	client.put_pixels(pixels)
-	return [iter,0,360,idle_increment]
+	return [[iter,0,360,rainbow_idle], stale_bass]
 
 def solid_rainbow_brightness_pulse(line_map,iter,levels,increment,min_brightness,max_brightness,pulse_intensity):
 	client = opc.Client(client_port)
@@ -233,19 +233,3 @@ def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,s
 	client.put_pixels(pixels)
 	return bass
 
-def solid_rainbow_pulse(line_map,iter,levels,stale_bass,decay_rate,brightness,hue_diff,rainbow_idle,similarity_theshold,pulse_intensity):
-	client = opc.Client(client_port)
-	if levels[0] == -1:
-		print("MISSING AUDIO DATA")
-		levels[0] = 0
-	bass = float(levels[0])
-	bass = max(stale_bass-decay_rate,bass)
-	state = min(pulse_intensity * bass,1)
-	if state < similarity_theshold:
-		state = 0		
-	hue = state * hue_diff
-	hue = (hue+iter) % 360
-	for x in line_map:
-		pixels[x] = hsvpos2rgb(hue,1.0,brightness,x)
-	client.put_pixels(pixels)
-	return [[iter,0,360,rainbow_idle], stale_bass]
