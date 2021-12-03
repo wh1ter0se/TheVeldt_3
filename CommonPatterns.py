@@ -180,6 +180,8 @@ def solid_rainbow_hue_pulse(line_map,iter,levels,stale_bass,decay_rate,brightnes
 	state = min(pulse_intensity * bass,1)
 	if state < similarity_theshold:
 		state = 0		
+	if (state != 0):
+		rainbow_idle = 0
 	hue = state * hue_diff
 	hue = (hue+iter) % 360
 	for x in line_map:
