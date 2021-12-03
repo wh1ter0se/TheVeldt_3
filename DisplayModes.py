@@ -226,7 +226,7 @@ def solid_rainbow_hue_pulse(levels,iterator,stale_levels=None,vars=None):
     decay_rate = 25.0
     brightness = 1.0
     hue_diff = 90.0
-    rainbow_idle = .5
+    rainbow_idle = -1.0
     similarity_theshold = .2
     pulse_intensity = .004
     iters = cp.solid_rainbow_hue_pulse(curr_house.allstrips,iterator[0],levels,iterator[1],decay_rate,brightness,hue_diff,rainbow_idle,similarity_theshold,pulse_intensity)
