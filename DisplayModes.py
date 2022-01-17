@@ -293,6 +293,17 @@ def two_color_pulse_striptest(levels,iterator,stale_levels=None,vars=None):
 
 dm_two_color_pulse_striptest = DisplayMode('Two Color Pulse Striptest',two_color_pulse_striptest,uses_MSGEQ7=True)
 
+def two_color_vert_pulse(levels,iterator,stale_level=None,vars=None):
+    decay_rate = 25.0
+    brightness = 1.0
+    hueA = 80.0
+    hueB = 0.0
+    similarity_theshold = .25
+    pulse_intensity = .004
+    iterator[0] = cp.two_color_vert_pulse(House.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
+
+dm_two_color_vert_pulse = DisplayMode("Two Color Vert Pulse",two_color_vert_pulse,uses_MSGEQ7=True)
+
 def solid_rainbow_clock(iterator,completion):
     iterator[0] = cp.ftick(cp.solid_rainbow(curr_house.allstrips,iterator[0],0.5,completion))
     return iterator
@@ -335,7 +346,8 @@ audio_dm_list = DisplayModeList("Audio-Based Patterns",
                  dm_solid_rainbow_saturation_pulse,
                  dm_solid_rainbow_brightness_pulse,
                  dm_two_color_pulse,
-                 dm_christmas_two_color_pulse])
+                 dm_christmas_two_color_pulse,
+                 dm_two_color_vert_pulse])
 
 palette_dm_list = DisplayModeList("Palette Patterns",
                   [dm_vert_palette])

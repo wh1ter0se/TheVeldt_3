@@ -1,6 +1,7 @@
 import opc, time, math, itertools, numpy
 import RoomConstants as rc
 from numpy import polyfit, polyval
+from colour import Color
 
 pixels = [(0,0,0)] * 512
 
@@ -39,6 +40,9 @@ def reorder_channels(rgb,RGB_order):
 	b = RGB_order[1]
 	c = RGB_order[2]
 	return rgb[a], rgb[b], rgb[c]
+
+def map(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def hsvpos2rgb(h,s,v,pos):
 	r, g, b = hsv2rgb(h,s,v)
@@ -235,3 +239,46 @@ def two_color_pulse(line_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,s
 	client.put_pixels(pixels)
 	return bass
 
+def two_color_vert_pulse(grid_map,levels,stale_bass,decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity):
+	client = opc.Client(client_port)
+	if levels[0] == -1:
+		print("MISSING AUDIO DATA")
+		levels[0] = 0
+	bass = float(levels[0])
+	bass = max(stale_bass-decay_rate,bass)
+	state = min(pulse_intensity * bass,1)
+	if state < similarity_theshold:
+		state = 0
+	height = len(grid_map[:,0])
+	
+	phase = int(map(state,0,256,1,4))
+	# phase 1: 0-85
+	# phase 2: 86-170
+	# phase 3: 171-255
+	colorA = Color(hsl=(hueA, 1.0, brightness))
+	colorB = Color(hsl=(hueB, 1.0, brightness))
+	match phase:
+		case 1: # all hue A
+			grad = list(colorA.range_to(colorA,height*2))
+			window = grad[-height:]
+		case 2: # top half of colorA-colorB gradient; midpoiint shifts with state
+			midpoint = map(state,86,170,0,height*2)
+			grad =      list(colorA.range_to(colorA,midpoint))
+			grad.extend(list(colorA.range_to(colorB,(height*2)-midpoint)))
+			window = grad[-height:]
+		case 3: # midpoint moves into window
+			midpoint = map(state,171,255,0,height)
+			grad =      list(colorA.range_to(colorA,midpoint))
+			grad.extend(list(colorA.range_to(colorB,height-midpoint)))
+			window = grad[-height:]
+
+	for j in range(len(grid_map[0])):
+		for i in range(len(grid_map)):
+			if grid_map[i][j] >= 0:
+				color = window[j]
+				h,s,v = color.get_hsl()
+				pixels[grid_map[i][j]] = hsvpos2rgb(h,s,v,grid_map[i][j])
+
+	client.put_pixels(pixels)
+	return bass
+		
