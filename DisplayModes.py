@@ -300,7 +300,7 @@ def two_color_vert_pulse(levels,iterator,stale_levels=None,vars=None):
     hueB = 0.0
     similarity_theshold = .25
     pulse_intensity = .004
-    iterator[0] = cp.two_color_vert_pulse(House.allstrips,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
+    iterator[0] = cp.two_color_vert_pulse(House.grid_map,levels,iterator[0],decay_rate,brightness,hueA,hueB,similarity_theshold,pulse_intensity)
 
 dm_two_color_vert_pulse = DisplayMode("Two Color Vert Pulse",two_color_vert_pulse,uses_MSGEQ7=True)
 
