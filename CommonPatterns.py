@@ -249,7 +249,7 @@ def two_color_vert_pulse(grid_map,levels,stale_bass,decay_rate,brightness,hueA,h
 	state = min(pulse_intensity * bass,1)
 	if state < similarity_theshold:
 		state = 0
-	height = len(grid_map[:,0])
+	height = len(grid_map[:][0])
 	
 	phase = int(map(state,0,256,1,4))
 	# phase 1: 0-85
