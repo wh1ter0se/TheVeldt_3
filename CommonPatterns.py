@@ -257,20 +257,19 @@ def two_color_vert_pulse(grid_map,levels,stale_bass,decay_rate,brightness,hueA,h
 	# phase 3: 171-255
 	colorA = Color(hsl=(hueA, 1.0, brightness))
 	colorB = Color(hsl=(hueB, 1.0, brightness))
-	match phase:
-		case 1: # all hue A
-			grad = list(colorA.range_to(colorA,height*2))
-			window = grad[-height:]
-		case 2: # top half of colorA-colorB gradient; midpoiint shifts with state
-			midpoint = map(state,86,170,0,height*2)
-			grad =      list(colorA.range_to(colorA,midpoint))
-			grad.extend(list(colorA.range_to(colorB,(height*2)-midpoint)))
-			window = grad[-height:]
-		case 3: # midpoint moves into window
-			midpoint = map(state,171,255,0,height)
-			grad =      list(colorA.range_to(colorA,midpoint))
-			grad.extend(list(colorA.range_to(colorB,height-midpoint)))
-			window = grad[-height:]
+	if phase == 1: # all hue A
+		grad = list(colorA.range_to(colorA,height*2))
+		window = grad[-height:]
+	elif phase == 2: # top half of colorA-colorB gradient; midpoiint shifts with state
+		midpoint = map(state,86,170,0,height*2)
+		grad =      list(colorA.range_to(colorA,midpoint))
+		grad.extend(list(colorA.range_to(colorB,(height*2)-midpoint)))
+		window = grad[-height:]
+	elif phase == 3: # midpoint moves into window
+		midpoint = map(state,171,255,0,height)
+		grad =      list(colorA.range_to(colorA,midpoint))
+		grad.extend(list(colorA.range_to(colorB,height-midpoint)))
+		window = grad[-height:]
 
 	for j in range(len(grid_map[0])):
 		for i in range(len(grid_map)):
