@@ -293,7 +293,7 @@ def two_color_pulse_striptest(levels,iterator,stale_levels=None,vars=None):
 
 dm_two_color_pulse_striptest = DisplayMode('Two Color Pulse Striptest',two_color_pulse_striptest,uses_MSGEQ7=True)
 
-def two_color_vert_pulse(levels,iterator,stale_level=None,vars=None):
+def two_color_vert_pulse(levels,iterator,stale_levels=None,vars=None):
     decay_rate = 25.0
     brightness = 1.0
     hueA = 80.0
