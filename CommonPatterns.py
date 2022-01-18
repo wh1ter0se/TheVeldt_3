@@ -1,4 +1,5 @@
-import opc, time, math, itertools, numpy
+import opc, time, math, itertools
+import numpy as np
 import RoomConstants as rc
 from numpy import polyfit, polyval
 from colour import Color
@@ -249,7 +250,7 @@ def two_color_vert_pulse(grid_map,levels,stale_bass,decay_rate,brightness,hueA,h
 	state = min(pulse_intensity * bass,1)
 	if state < similarity_theshold:
 		state = 0
-	height = len(grid_map[0])
+	height = np.shape(grid_map)[1]
 	
 	phase = int(map(state,0,256,1,4))
 	# phase 1: 0-85
